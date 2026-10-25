@@ -1,0 +1,33 @@
+## Interface: 20506
+## Title: GryphonChat
+## Notes: Extends the default chat with additional features.
+## Notes-deDE: Erweitert den Standard-Chat um zusätzliche Funktionen.
+## Notes-frFR: Ajoute des fonctions supplémentaires au chat standard.
+## Category: Chat
+## Author: cklausl
+## Version: 0.1.0
+## SavedVariables: GryphonChatDB
+## SavedVariablesPerCharacter: GryphonChatCharDB
+## IconTexture: Interface\Icons\Ability_Warrior_BattleShout
+## X-Category: Chat
+## X-License: MIT
+## X-Website: https://github.com/Clausi/gryphonChat
+
+# Localization (enUS must be loaded first, it is the fallback)
+Locales\enUS.lua
+Locales\deDE.lua
+Locales\frFR.lua
+
+# Core
+Core\Init.lua
+Core\Compat.lua
+Core\Util.lua
+Core\CopyFrame.lua
+
+# Modules
+Modules\ChatLinks.lua
+Modules\ChatCopy.lua
+Modules\ChatHistory.lua
+
+# Bootstrap (must be loaded last)
+Core\Main.lua

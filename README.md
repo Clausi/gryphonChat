@@ -1,0 +1,124 @@
+# GryphonChat
+
+A World of Warcraft addon that extends the default chat.
+
+## Features
+
+- **Clickable web links:** web addresses in chat (`https://...`, `www....`) become links. A click
+  opens a small dialog to copy the address.
+- **Copy chat:** a button in the button bar of every chat window opens its whole content as plain
+  text to copy.
+- **Longer chat history:** the number of lines each chat window keeps is configurable (default 128).
+
+The full description for CurseForge is in [docs/addon-description.md](docs/addon-description.md).
+
+## Supported clients
+
+| Client      | Interface | Status    |
+| ----------- | --------- | --------- |
+| Anniversary | 20506     | Supported |
+| Forever     | 16001     | Planned (next) |
+| Classic Era | 11509     | Planned   |
+| MoP Classic | 50504     | Planned   |
+| Retail      | 120105    | Planned   |
+
+For now only Anniversary is supported. The addon will be released for WoW Forever later; after
+that, one package is meant to work on all clients. Client differences are handled in
+`Core/Compat.lua`.
+
+## Installation
+
+Copy (or symlink) the `GryphonChat` folder into the client's AddOns folder:
+
+```
+World of Warcraft\<client folder>\Interface\AddOns\GryphonChat
+```
+
+## Releasing
+
+1. Move the `[Unreleased]` entries in `CHANGELOG.md` to a new version section and bump
+   `## Version` in `GryphonChat.toc`, then merge that into `main`.
+2. Tag the merge commit on `main` and push the tag:
+
+   ```
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+
+3. The `Release` workflow runs luacheck, builds the package with the
+   [BigWigs packager](https://github.com/BigWigsMods/packager) and uploads it to CurseForge (project
+   ID from `X-Curse-Project-ID` in the TOC), Wago Addons (`X-Wago-ID`) and as a GitHub release.
+   Game versions come from `## Interface`. It needs the repository secrets `CF_API_KEY` (a
+   CurseForge API token) and `WAGO_API_TOKEN` (a Wago Addons API key).
+
+## Structure
+
+```
+GryphonChat/
+├── .github/workflows/
+│   ├── luacheck.yml       # luacheck on pushes to main and on pull requests
+│   └── release.yml        # Builds and uploads a release on version tags (BigWigs packager)
+├── .pkgmeta               # Packager config: changelog and files left out of the package
+├── GryphonChat.toc        # Addon manifest, defines load order
+├── LICENSE                # MIT license
+├── docs/
+│   └── addon-description.md  # Description text for CurseForge / Wago / WoWInterface (not shipped)
+├── Locales/
+│   ├── enUS.lua           # Base locale (fallback, all keys)
+│   ├── deDE.lua           # German translation
+│   └── frFR.lua           # French translation
+├── Core/
+│   ├── Init.lua           # Namespace, module registry, event dispatcher
+│   ├── Compat.lua         # Client differences (Forever, Classic Era, Anniversary, MoP Classic, Retail) detected from the APIs
+│   ├── Util.lua           # Print/Notify/Debug helpers, debug memory output, defaults
+│   ├── CopyFrame.lua      # Read-only dialogs to copy a line or a whole text with Ctrl+C
+│   └── Main.lua           # Bootstrap: saved variables, module lifecycle, slash commands
+└── Modules/
+    ├── ChatLinks.lua      # Turns web addresses in chat into links that open the copy dialog
+    ├── ChatCopy.lua       # Copy button in the button bar of every chat window
+    └── ChatHistory.lua    # Number of lines every chat window keeps ("/gryphonchat lines")
+```
+
+## Adding a module
+
+1. Create `Modules/MyModule.lua`:
+
+   ```lua
+   local _, ns = ...
+   local MyModule = ns:RegisterModule("MyModule")
+
+   function MyModule:OnInitialize() end -- saved variables available
+   function MyModule:OnEnable() end     -- PLAYER_LOGIN
+   ```
+
+2. Add it to `GryphonChat.toc` above `Core\Main.lua`.
+
+## Localization
+
+All strings live in `Locales/`. Add new keys to `enUS.lua` first; other locales
+only override what they translate. Missing keys fall back to English.
+
+## Development
+
+Lint with [luacheck](https://github.com/lunarmodules/luacheck). Place `luacheck.exe` in `.tools/`
+(ignored by git) and run from the repo root:
+
+```
+./.tools/luacheck.exe .
+```
+
+## Slash commands
+
+- `/gryphonchat` – help
+- `/gryphonchat version` – show version
+- `/gryphonchat lines <50-5000>` – lines every chat window of the current character keeps, and so
+  what "Copy chat" can show (default 128 as in Blizzard's UI); without a number, shows the setting
+- `/gryphonchat notify on|off` – automatic messages of the addon (e.g. on login) for the current
+  character, default on
+- `/gryphonchat debug` – toggle debug output (after a `/reload`, also the memory each module keeps)
+
+Modules add subcommands with `ns:RegisterCommand(name, handler, helpLines)`.
+
+## License
+
+[MIT](LICENSE)
