@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   LookingForGroup LfG, GuildRecruitment GR), every channel can get an own one with
   `/gryphonchat channels set <channel|number> <short name>`. Turn it on per character with
   `/gryphonchat channels on`.
+- Options page in the game settings (Esc > Options > AddOns > GryphonChat) for the automatic
+  messages, the chat lines and the short channel names, also opened with `/gryphonchat options`.
+  The short channel names can also be set in the chat settings (right click on a chat tab >
+  Settings > GryphonChat).
 
 ## [0.1.0] - 2026-10-25
 

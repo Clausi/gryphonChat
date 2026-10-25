@@ -11,6 +11,8 @@ A World of Warcraft addon that extends the default chat.
 - **Longer chat history:** the number of lines each chat window keeps is configurable (default 128).
 - **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
   channels have default short names, every channel can get an own one.
+- **Options:** all settings on an own page in the game options, the short channel names also in the
+  chat settings of every chat window.
 
 The full description for CurseForge is in [docs/addon-description.md](docs/addon-description.md).
 
@@ -79,7 +81,10 @@ GryphonChat/
     ├── ChatLinks.lua      # Turns web addresses in chat into links that open the copy dialog
     ├── ChatCopy.lua       # Copy button in the button bar of every chat window
     ├── ChatHistory.lua    # Number of lines every chat window keeps ("/gryphonchat lines")
-    └── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
+    ├── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
+    ├── ChannelNamesEditor.lua  # Editor for the short channel names, used by Options and ChatConfig
+    ├── Options.lua        # Options page in the game settings ("/gryphonchat options")
+    └── ChatConfig.lua     # GryphonChat category in the chat settings of every chat window
 ```
 
 ## Adding a module
@@ -114,6 +119,7 @@ Lint with [luacheck](https://github.com/lunarmodules/luacheck). Place `luacheck.
 
 - `/gryphonchat` – help
 - `/gryphonchat version` – show version
+- `/gryphonchat options` – open the options page
 - `/gryphonchat lines <50-5000>` – lines every chat window of the current character keeps, and so
   what "Copy chat" can show (default 128 as in Blizzard's UI); without a number, shows the setting
 - `/gryphonchat channels` – show the joined channels with their short names
