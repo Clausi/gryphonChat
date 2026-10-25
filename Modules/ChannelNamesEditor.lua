@@ -32,12 +32,19 @@ local function GetEntries()
     return entries
 end
 
+-- Shows the saved short name in the edit box. An edit box scrolls its text to the cursor, which
+-- SetText puts at the end: without a laid out width the text stays out of view until a click.
+local function ShowShortName(row)
+    row.editBox:SetText(ns.modules.ChannelNames.GetShortName(row.entry.name) or "")
+    row.editBox:SetCursorPosition(0)
+end
+
 local function UpdateRow(row)
     local ChannelNames = ns.modules.ChannelNames
     row.label:SetText(row.entry.label)
     -- A focused edit box keeps what the user is typing.
     if not row.editBox:HasFocus() then
-        row.editBox:SetText(ChannelNames.GetShortName(row.entry.name) or "")
+        ShowShortName(row)
     end
     row.resetButton:SetEnabled(ChannelNames.GetCustomShortName(row.entry.name) ~= nil)
 end
@@ -60,7 +67,7 @@ local function Commit(editor, row)
             editor.errorText:SetFormattedText(L["CHANNELS_INVALID"], ChannelNames.MAX_SHORT_NAME_LENGTH)
         end
     end
-    row.editBox:SetText(ChannelNames.GetShortName(name) or "")
+    ShowShortName(row)
     UpdateRow(row)
 end
 
@@ -84,7 +91,7 @@ local function CreateRow(editor, index)
     editBox:SetMaxLetters(ns.modules.ChannelNames.MAX_SHORT_NAME_LENGTH)
     editBox:SetScript("OnEnterPressed", editBox.ClearFocus)
     editBox:SetScript("OnEscapePressed", function(self)
-        self:SetText(ns.modules.ChannelNames.GetShortName(row.entry.name) or "")
+        ShowShortName(row)
         self:ClearFocus()
     end)
     editBox:SetScript("OnEditFocusLost", function()
@@ -175,7 +182,16 @@ function ChannelNamesEditor.Create(parent)
     editor.emptyText:SetPoint("LEFT", 4, 0)
     editor.emptyText:SetText(L["CHANNELS_NONE"])
 
-    editor:SetScript("OnShow", Refresh)
+    -- The options window lays out its pages only after showing them: refresh again once the edit
+    -- boxes have their size.
+    editor:SetScript("OnShow", function()
+        Refresh(editor)
+        C_Timer.After(0, function()
+            if editor:IsVisible() then
+                Refresh(editor)
+            end
+        end)
+    end)
     editors[#editors + 1] = editor
     return editor
 end
