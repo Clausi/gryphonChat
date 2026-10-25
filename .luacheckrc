@@ -33,6 +33,7 @@ read_globals = {
     "UpdateAddOnMemoryUsage",
     "GetChannelList",
     "GetLocale",
+    "InCombatLockdown",
     "IsControlKeyDown",
 
     -- UI helpers
