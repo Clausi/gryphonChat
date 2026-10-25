@@ -31,6 +31,9 @@ Modules\ChatLinks.lua
 Modules\ChatCopy.lua
 Modules\ChatHistory.lua
 Modules\ChannelNames.lua
+Modules\ChannelNamesEditor.lua
+Modules\Options.lua
+Modules\ChatConfig.lua
 
 # Bootstrap (must be loaded last)
 Core\Main.lua

@@ -40,10 +40,19 @@ read_globals = {
     "EventRegistry",
     "FCF_OpenTemporaryWindow",
     "GameTooltip_Hide",
+    "Settings",
+    "MinimalSliderWithSteppersMixin",
+    "ChatConfigCategory_OnClick",
+    "ChatConfigCategoryFrame_Refresh",
+    "CHAT_CONFIG_CATEGORIES",
 
     -- Frames
     "CHAT_FRAMES",
     "DEFAULT_CHAT_FRAME",
     "GameTooltip",
     "UIParent",
+    "ChatConfigFrame",
+    "ChatConfigBackgroundFrame",
+    "ChatConfigCategoryFrame",
+    "ChatConfigCategoryFrameButton4",
 }

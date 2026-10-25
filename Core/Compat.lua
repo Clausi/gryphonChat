@@ -72,3 +72,57 @@ function Compat.GetJoinedChannels()
     end
     return channels
 end
+
+-- Adds an own category below "Other" in the chat settings (right click on a chat tab > Settings)
+-- that shows panel. Blizzard shows its panels by the button ID as index into CHAT_CONFIG_CATEGORIES
+-- (ChatConfigFrame_Shared.lua). That table is not touched, to keep taint out: the own button calls
+-- ChatConfigCategory_OnClick with an ID that is not in it, which hides all of Blizzard's panels, and
+-- a hook hides the own panel again when one of Blizzard's buttons is clicked. Returns false if the
+-- chat settings are not there.
+function Compat.AddChatConfigCategory(text, panel)
+    local categoryFrame = ChatConfigCategoryFrame
+    -- "Other", the last category of a normal chat window.
+    local lastButton = ChatConfigCategoryFrameButton4
+    if not categoryFrame or not lastButton or not ChatConfigCategory_OnClick then
+        return false
+    end
+
+    -- Built like ConfigCategoryButtonTemplate, which needs a global frame name for its highlight.
+    local button = CreateFrame("Button", nil, categoryFrame)
+    button:SetID(#CHAT_CONFIG_CATEGORIES + 1)
+    button:SetHeight(16)
+    button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -1)
+    button:SetPoint("TOPRIGHT", lastButton, "BOTTOMRIGHT", 0, -1)
+    button:SetNormalFontObject("GameFontNormalLeft")
+    button:SetHighlightFontObject("GameFontHighlightLeft")
+    button:SetText(text)
+    button:GetFontString():ClearAllPoints()
+    button:GetFontString():SetPoint("LEFT", 2, 1)
+    button:SetHighlightTexture("Interface\\Buttons\\UI-Listbox-Highlight2", "ADD")
+    button:GetHighlightTexture():SetVertexColor(0.11, 0.325, 0.48)
+    -- Looked up on click: the hook below replaces the global function.
+    button:SetScript("OnClick", function(self)
+        ChatConfigCategory_OnClick(self)
+    end)
+
+    -- Same place as Blizzard's panels.
+    panel:SetParent(ChatConfigFrame)
+    panel:ClearAllPoints()
+    panel:SetPoint("TOPLEFT", ChatConfigBackgroundFrame, "TOPLEFT")
+    panel:SetPoint("BOTTOMRIGHT", ChatConfigBackgroundFrame, "BOTTOMRIGHT")
+    panel:Hide()
+
+    hooksecurefunc("ChatConfigCategory_OnClick", function(clicked)
+        panel:SetShown(clicked == button)
+        if clicked == button then
+            button:LockHighlight()
+        else
+            button:UnlockHighlight()
+        end
+    end)
+    -- The text to speech window hides the chat categories; the own one follows "Other".
+    hooksecurefunc("ChatConfigCategoryFrame_Refresh", function()
+        button:SetShown(lastButton:IsShown())
+    end)
+    return true
+end
