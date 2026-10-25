@@ -15,12 +15,19 @@ A new button next to every chat window, including whisper windows, shows the who
 ### Longer chat history
 Chat windows normally keep only the last 128 lines. With `/gryphonchat lines <number>` you choose how many lines they keep for the current character, up to 5000.
 
+### Short channel names
+Turn long channel names into short ones: *[1. General - Elwynn Forest]* becomes *[1. G]*, *[4. LookingForGroup]* becomes *[4. LfG]*. Blizzard's channels come with short names, and you can give every channel your own, e.g. `/gryphonchat channels set Global G`. Off by default, turn it on with `/gryphonchat channels on`.
+
 ## Slash commands
 
 | Command | Description |
 |---|---|
 | `/gryphonchat` | Show all commands |
 | `/gryphonchat lines <50-5000>` | How many lines every chat window of this character keeps (default 128) |
+| `/gryphonchat channels` | Show your channels and their short names |
+| `/gryphonchat channels on\|off` | Short channel names for this character |
+| `/gryphonchat channels set <channel> <short name>` | Your own short name for a channel |
+| `/gryphonchat channels reset <channel>` | Remove your own short name |
 | `/gryphonchat notify on\|off` | Turn the automatic messages of this character on or off |
 
 ## Good to know

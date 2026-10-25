@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Optional short channel names, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
+  channels have default short names (General G, Trade T, LocalDefense LD, WorldDefense WD,
+  LookingForGroup LfG, GuildRecruitment GR), every channel can get an own one with
+  `/gryphonchat channels set <channel|number> <short name>`. Turn it on per character with
+  `/gryphonchat channels on`.
+
 ## [0.1.0] - 2026-10-25
 
 First release, for WoW Classic Anniversary.

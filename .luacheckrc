@@ -31,6 +31,7 @@ read_globals = {
     "CreateFrame",
     "GetAddOnMemoryUsage",
     "UpdateAddOnMemoryUsage",
+    "GetChannelList",
     "GetLocale",
     "IsControlKeyDown",
 

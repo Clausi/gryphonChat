@@ -17,6 +17,12 @@ ns.charDefaults = {
     notifications = true,
     -- Lines every chat window keeps (Blizzard default). Change with "/gryphonchat lines <n>".
     chatLines = 128,
+    -- Short channel names in chat. Change with "/gryphonchat channels".
+    channelNames = {
+        enabled = false,
+        -- Own short names, keyed by lowercase channel name: { name = "Global", shortName = "G" }.
+        custom = {},
+    },
 }
 
 -- Registers a module. A module may implement:
