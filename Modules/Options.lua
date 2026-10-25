@@ -61,7 +61,12 @@ function Options:OnInitialize()
     Settings.RegisterAddOnCategory(category)
 end
 
--- "/gryphonchat options" opens the options page.
+-- "/gryphonchat options" opens the options page. Opening it from addon code is blocked in combat
+-- (ADDON_ACTION_BLOCKED for OpenSettingsPanel); Esc > Options still works there.
 ns:RegisterCommand("options", function()
+    if InCombatLockdown() then
+        ns:Print(L["OPTIONS_IN_COMBAT"])
+        return
+    end
     Settings.OpenToCategory(category:GetID())
 end, { L["HELP_OPTIONS"] })
