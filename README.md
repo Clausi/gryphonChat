@@ -9,6 +9,8 @@ A World of Warcraft addon that extends the default chat.
 - **Copy chat:** a button in the button bar of every chat window opens its whole content as plain
   text to copy.
 - **Longer chat history:** the number of lines each chat window keeps is configurable (default 128).
+- **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
+  channels have default short names, every channel can get an own one.
 
 The full description for CurseForge is in [docs/addon-description.md](docs/addon-description.md).
 
@@ -76,7 +78,8 @@ GryphonChat/
 └── Modules/
     ├── ChatLinks.lua      # Turns web addresses in chat into links that open the copy dialog
     ├── ChatCopy.lua       # Copy button in the button bar of every chat window
-    └── ChatHistory.lua    # Number of lines every chat window keeps ("/gryphonchat lines")
+    ├── ChatHistory.lua    # Number of lines every chat window keeps ("/gryphonchat lines")
+    └── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
 ```
 
 ## Adding a module
@@ -113,6 +116,11 @@ Lint with [luacheck](https://github.com/lunarmodules/luacheck). Place `luacheck.
 - `/gryphonchat version` – show version
 - `/gryphonchat lines <50-5000>` – lines every chat window of the current character keeps, and so
   what "Copy chat" can show (default 128 as in Blizzard's UI); without a number, shows the setting
+- `/gryphonchat channels` – show the joined channels with their short names
+- `/gryphonchat channels on|off` – short channel names for the current character, default off
+- `/gryphonchat channels set <channel|number> <short name>` – own short name for a channel, e.g.
+  `/gryphonchat channels set Global G`
+- `/gryphonchat channels reset <channel|number>` – remove the own short name
 - `/gryphonchat notify on|off` – automatic messages of the addon (e.g. on login) for the current
   character, default on
 - `/gryphonchat debug` – toggle debug output (after a `/reload`, also the memory each module keeps)

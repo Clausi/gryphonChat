@@ -61,3 +61,14 @@ function Compat.CreateChatFrameButton(chatFrame, layoutIndex)
     buttonFrame:MarkDirty()
     return button
 end
+
+-- Channels the character has joined, in channel number order: { { number = 1, name = "General" },
+-- ... }. GetChannelList() returns number, name (without zone) and disabled flag per channel.
+function Compat.GetJoinedChannels()
+    local channels = {}
+    local list = { GetChannelList() }
+    for i = 1, #list, 3 do
+        channels[#channels + 1] = { number = list[i], name = list[i + 1] }
+    end
+    return channels
+end

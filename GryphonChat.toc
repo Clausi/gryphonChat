@@ -30,6 +30,7 @@ Core\CopyFrame.lua
 Modules\ChatLinks.lua
 Modules\ChatCopy.lua
 Modules\ChatHistory.lua
+Modules\ChannelNames.lua
 
 # Bootstrap (must be loaded last)
 Core\Main.lua
