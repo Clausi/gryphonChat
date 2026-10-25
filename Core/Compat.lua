@@ -8,8 +8,8 @@ local Compat = {}
 ns.Compat = Compat
 
 -- Registers a filter for a chat message event: filter(chatFrame, event, message, ...) returns
--- true to hide the message, or false followed by the changed event arguments. Anniversary has
--- ChatFrameUtil.AddMessageEventFilter; the global ChatFrame_AddMessageEventFilter only exists as
+-- true to hide the message, or false followed by the changed event arguments. The Classic clients
+-- have ChatFrameUtil.AddMessageEventFilter; the global ChatFrame_AddMessageEventFilter only exists as
 -- a deprecation fallback there.
 function Compat.AddMessageEventFilter(event, filter)
     ChatFrameUtil.AddMessageEventFilter(event, filter)
