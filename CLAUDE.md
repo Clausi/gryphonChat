@@ -9,16 +9,19 @@ file only adds what is specific to GryphonChat.
 
 ## Target clients
 
-- **For now only Anniversary** (20506, Classic UI, game folder `_anniversary_`) is supported and
-  listed in `## Interface:`. Develop and verify against Anniversary only (`classic_anniversary`
-  branch of wow-ui-source, chat frame code in the `Blizzard_ChatFrame*` folders); do not add code
-  for other clients yet.
-- **WoW Forever (16001) is the next target:** the addon will be released for Forever later, so
-  keep Forever in mind for every design decision (Mainline UI and API, "First Surname" names
-  without realm, secret values). After that, the same package is meant to support Retail, Classic
-  Era and MoP Classic as well.
+- **Supported: the Classic UI clients** Classic Era (11509, `_classic_era_`), Anniversary (20506,
+  `_anniversary_`) and MoP Classic (50504, `_classic_`), all listed in `## Interface:`. Their chat
+  frame code (`Blizzard_ChatFrame*` folders of the `classic_era`, `classic_anniversary` and `classic`
+  branches of wow-ui-source) was identical when they were added. Check all three branches when
+  hooking Blizzard code; Anniversary is the main test client.
+- **Retail (120105) is the next target**, the first client with the Mainline UI and API (other
+  chat button bar and chat settings layout, secret values). Do not add Mainline code before work on
+  Retail starts.
+- **WoW Forever (16001) follows** once it is released; it cannot be tested before that. Keep it in
+  mind for every design decision (Mainline UI and API, "First Surname" names without realm, secret
+  values).
 - Therefore every client difference already goes through `ns.Compat`, including chat frame
-  internals and sending messages, even if only the Anniversary variant exists yet.
+  internals and sending messages, even if only the Classic variant exists yet.
 - `Core/Names.lua` does not exist yet. When a feature needs names, take over `Core/Names.lua` and
   `Compat.HasRealmNames()` from GryphonMail.
 
