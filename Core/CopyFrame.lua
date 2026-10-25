@@ -41,8 +41,13 @@ local function CreateDialog(width, height)
     dialog.hint = dialog:CreateFontString(nil, "ARTWORK", "GameFontDisableSmall")
     dialog.hint:SetPoint("BOTTOM", 0, 18)
 
-    local closeButton = CreateFrame("Button", nil, dialog, "UIPanelCloseButton")
+    -- UIPanelCloseButton closes with HideUIPanel(), which is blocked in combat for addon frames
+    -- ("Interface action failed because of an AddOn"). The dialog is no UI panel, so it just hides.
+    local closeButton = CreateFrame("Button", nil, dialog, "UIPanelCloseButtonNoScripts")
     closeButton:SetPoint("TOPRIGHT", -6, -6)
+    closeButton:SetScript("OnClick", function()
+        dialog:Hide()
+    end)
 
     return dialog
 end
