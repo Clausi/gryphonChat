@@ -1,4 +1,4 @@
-## Interface: 20506
+## Interface: 11509, 20506, 50504
 ## Title: GryphonChat
 ## Notes: Extends the default chat with additional features.
 ## Notes-deDE: Erweitert den Standard-Chat um zusätzliche Funktionen.

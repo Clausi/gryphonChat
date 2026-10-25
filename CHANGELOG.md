@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   messages, the chat lines and the short channel names, also opened with `/gryphonchat options`.
   The short channel names can also be set in the chat settings (right click on a chat tab >
   Settings > GryphonChat).
+- Support for WoW Classic Era and MoP Classic, in the same package as Anniversary.
 
 ## [0.1.0] - 2026-10-25
 
