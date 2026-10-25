@@ -23,8 +23,9 @@ World of Warcraft addon that extends the default chat.
   memory.
 - Verify interface numbers in-game with `/dump select(4, GetBuildInfo())`.
 - Character names differ per client. When a feature needs to build, compare or show names, take
-  over `Core/Names.lua` and `Compat.HasRealmNames()` from GryphonMail (`D:\code\GryphonMail`) and
-  always use `ns.Names`; never use `Ambiguate`. The rules:
+  over `Core/Names.lua` and `Compat.HasRealmNames()` from GryphonMail
+  (https://github.com/Clausi/gryphonMail) and always use `ns.Names`; never use `Ambiguate`. The
+  rules:
   - **Forever:** names are "First Surname" (separator from
     `Constants.CharacterNameSeparatorConsts.CHARACTERNAME_SURNAME_SEPARATOR`, a space) and carry no
     realm suffix. `UnitName(unit)` returns first name and **surname**, not name and realm. Each
