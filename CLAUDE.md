@@ -83,6 +83,10 @@ World of Warcraft addon that extends the default chat.
 - Prefer `hooksecurefunc`, `HookScript` and `ChatFrame_AddMessageEventFilter` over replacing
   Blizzard functions, methods or scripts (e.g. a chat frame's `AddMessage`), to avoid taint.
 - Keep writes to Blizzard frames minimal and document why, in the code and in `.luacheckrc`.
+- Own frames must not go through Blizzard's panel manager (`ShowUIPanel`, `HideUIPanel`,
+  `HideParentPanel`, the scripts of `UIPanelCloseButton`): from addon code it is blocked in combat
+  ("Interface action failed because of an AddOn"). Use `UIPanelCloseButtonNoScripts` with an own
+  `OnClick` that calls `frame:Hide()`.
 - Values returned by the API and chat event arguments may be secret values (Forever, Retail), e.g.
   chat messages during encounters. Guard string or number operations on them with `issecretvalue`
   and pass secret values through unchanged.
