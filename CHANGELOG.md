@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-25
+
+Now for WoW Classic Era, Classic Anniversary and MoP Classic.
+
 ### Added
 
 - Optional short channel names, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
@@ -36,5 +40,6 @@ First release, for WoW Classic Anniversary.
   for the current character.
 - English, German and French translation.
 
-[Unreleased]: https://github.com/Clausi/gryphonChat/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Clausi/gryphonChat/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Clausi/gryphonChat/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Clausi/gryphonChat/releases/tag/v0.1.0
