@@ -14,14 +14,17 @@ file only adds what is specific to GryphonChat.
   frame code (`Blizzard_ChatFrame*` folders of the `classic_era`, `classic_anniversary` and `classic`
   branches of wow-ui-source) was identical when they were added. Check all three branches when
   hooking Blizzard code; Anniversary is the main test client.
-- **Retail (120105) is the next target**, the first client with the Mainline UI and API (other
-  chat button bar and chat settings layout, secret values). Do not add Mainline code before work on
-  Retail starts.
+- **Supported: Retail** (120105, `_retail_`, `live` branch of wow-ui-source), the first client with
+  the Mainline UI and API. Its chat frame code differs from the Classic clients in the button bar
+  next to a chat window (no layout frame, buttons are anchored) and in secret values (e.g. message
+  filters are skipped for secret event arguments, whisper window names can be secret). The chat
+  settings and the message filter API were the same when Retail was added. Check the `live` branch
+  as well when hooking Blizzard code.
 - **WoW Forever (16001) follows** once it is released; it cannot be tested before that. Keep it in
   mind for every design decision (Mainline UI and API, "First Surname" names without realm, secret
   values).
 - Therefore every client difference already goes through `ns.Compat`, including chat frame
-  internals and sending messages, even if only the Classic variant exists yet.
+  internals and sending messages, even if all clients use the same code there yet.
 - `Core/Names.lua` does not exist yet. When a feature needs names, take over `Core/Names.lua` and
   `Compat.HasRealmNames()` from GryphonMail.
 
