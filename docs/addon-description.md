@@ -1,6 +1,6 @@
 # GryphonChat
 
-**A better chat for World of Warcraft Classic: Classic Era, Anniversary and MoP Classic.**
+**A better chat for World of Warcraft: Retail, Classic Era, Anniversary and MoP Classic.**
 
 GryphonChat extends the default chat instead of replacing it. Everything stays where you know it, with a few tools that make chatting easier.
 
@@ -35,8 +35,8 @@ All settings are on their own page in the game options (**Esc > Options > AddOns
 | `/gryphonchat notify on\|off` | Turn the automatic messages of this character on or off |
 
 ## Good to know
-- Made for **Classic Era**, **Classic Anniversary** and **MoP Classic**. Support for **Retail**
-  and **WoW Forever** follows later.
+- Made for **Retail**, **Classic Era**, **Classic Anniversary** and **MoP Classic**. Support for
+  **WoW Forever** follows later.
 - Languages: English, German, French.
 
 ## Feedback & source code

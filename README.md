@@ -23,10 +23,10 @@ The full description for CurseForge is in [docs/addon-description.md](docs/addon
 | Classic Era | 11509     | Supported |
 | Anniversary | 20506     | Supported |
 | MoP Classic | 50504     | Supported |
-| Retail      | 120105    | Planned (next) |
+| Retail      | 120105    | Supported |
 | Forever     | 16001     | Planned   |
 
-One package works on all supported clients. Retail follows next, WoW Forever once it is released.
+One package works on all supported clients. WoW Forever follows once it is released.
 Client differences are handled in `Core/Compat.lua`.
 
 ## Installation
