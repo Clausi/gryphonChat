@@ -8,9 +8,10 @@ local Compat = {}
 ns.Compat = Compat
 
 -- Registers a filter for a chat message event: filter(chatFrame, event, message, ...) returns
--- true to hide the message, or false followed by the changed event arguments. The Classic clients
+-- true to hide the message, or false followed by the changed event arguments. All supported clients
 -- have ChatFrameUtil.AddMessageEventFilter; the global ChatFrame_AddMessageEventFilter only exists as
--- a deprecation fallback there.
+-- a deprecation fallback there. Blizzard skips the filter when an event argument is a secret value
+-- (ChatFrameFilters.lua, canaccessvalue).
 function Compat.AddMessageEventFilter(event, filter)
     ChatFrameUtil.AddMessageEventFilter(event, filter)
 end
@@ -49,16 +50,26 @@ function Compat.GetChatFrameName(chatFrame)
     return chatFrame.name or chatFrame:GetName()
 end
 
--- Creates an own button in the button bar next to a chat window. The bar (chatFrame.buttonFrame in
--- FloatingChatFrame.xml) is a VerticalLayoutFrame that stacks its children by layoutIndex from top
--- to bottom: ChatFrame1 uses -2 to 3, the other windows 1 to 3. Duplicate indices raise an error.
+-- Creates an own button in the button bar next to a chat window (chatFrame.buttonFrame in
+-- FloatingChatFrame.xml).
+-- Classic: the bar is a VerticalLayoutFrame that stacks its children by layoutIndex from top to
+-- bottom: ChatFrame1 uses -2 to 3, the other windows 1 to 3. Duplicate indices raise an error.
+-- Mainline: the bar has no layout. Blizzard anchors the channel button (ChatFrame1) and the minimize
+-- button (undocked windows) to the top and ChatFrameMenuButton to the bottom of ChatFrame1's bar.
+-- The own button goes to the bottom, above the menu button; there is room for one.
 function Compat.CreateChatFrameButton(chatFrame, layoutIndex)
     local buttonFrame = chatFrame.buttonFrame
     local button = CreateFrame("Button", nil, buttonFrame)
-    button.layoutIndex = layoutIndex
-    button.align = "center"
     button:SetSize(32, 32)
-    buttonFrame:MarkDirty()
+    if buttonFrame.MarkDirty then
+        button.layoutIndex = layoutIndex
+        button.align = "center"
+        buttonFrame:MarkDirty()
+    elseif ChatFrameMenuButton and ChatFrameMenuButton:GetParent() == buttonFrame then
+        button:SetPoint("BOTTOM", ChatFrameMenuButton, "TOP")
+    else
+        button:SetPoint("BOTTOM")
+    end
     return button
 end
 

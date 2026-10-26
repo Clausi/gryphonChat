@@ -3,7 +3,8 @@ local L = ns.L
 local ChatCopy = ns:RegisterModule("ChatCopy")
 
 -- Button in the button bar of every chat window that opens the whole window content to copy.
--- Above the Blizzard buttons, which use the layout indices -2 to 3 (see Compat.CreateChatFrameButton).
+-- Classic: above the Blizzard buttons, which use the layout indices -2 to 3. Mainline: at the bottom
+-- (see Compat.CreateChatFrameButton).
 local BUTTON_LAYOUT_INDEX = -10
 local BUTTON_ICON = "Interface\\Buttons\\UI-GuildButton-PublicNote-Up"
 local BUTTON_HIGHLIGHT = "Interface\\Buttons\\UI-Common-MouseHilight"
