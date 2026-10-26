@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for WoW Retail, in the same package as the Classic clients. The "Copy chat" button sits
+  at the bottom of the button bar next to the chat window there.
+
 ## [0.2.0] - 2026-10-25
 
 Now for WoW Classic Era, Classic Anniversary and MoP Classic.
