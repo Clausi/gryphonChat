@@ -19,6 +19,8 @@ local DEFAULT_CHANNELS = {
     "WORLD_DEFENSE",
     "LOOKING_FOR_GROUP",
     "GUILD_RECRUITMENT",
+    -- Retail only: "Trade (Services) - <city>".
+    "SERVICES",
 }
 
 ChannelNames.MAX_SHORT_NAME_LENGTH = 16
@@ -97,7 +99,7 @@ function ChannelNames.GetCustomChannels()
 end
 
 -- Event arguments of CHAT_MSG_CHANNEL: arg4 is the channel name with number, e.g.
--- "1. General - Elwynn Forest".
+-- "1. General - Elwynn Forest", arg8 the channel number.
 local function ChannelFilter(_, _, message, sender, language, channelName, ...)
     if not ChannelNames.IsEnabled() or type(channelName) ~= "string"
         or (issecretvalue and issecretvalue(channelName)) then
@@ -107,7 +109,9 @@ local function ChannelFilter(_, _, message, sender, language, channelName, ...)
     if not prefix then
         return false
     end
-    local shortName = ChannelNames.GetShortName(GetBaseName(channelName:sub(#prefix + 1)))
+    local channelNumber = select(4, ...)
+    local baseName = ns.Compat.GetChannelBaseName(channelNumber) or GetBaseName(channelName:sub(#prefix + 1))
+    local shortName = ChannelNames.GetShortName(baseName)
     if not shortName then
         return false
     end

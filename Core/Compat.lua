@@ -84,6 +84,21 @@ function Compat.GetJoinedChannels()
     return channels
 end
 
+-- Name of a joined channel without zone, as GetChannelList returns it: "General" for "General -
+-- Elwynn Forest", or nil. ChatFrameUtil.GetChannelShortcutName splits the full name at "-" on the
+-- Classic clients and asks C_ChatInfo.GetChannelShortcut on Mainline, which also covers names like
+-- "Trade (Services) - Stormwind City" -> "Services".
+function Compat.GetChannelBaseName(channelNumber)
+    if type(channelNumber) ~= "number" or not select(2, GetChannelName(channelNumber)) then
+        return nil
+    end
+    local name = ChatFrameUtil.GetChannelShortcutName(channelNumber)
+    if name == "" then
+        return nil
+    end
+    return name
+end
+
 -- Adds an own category below "Other" in the chat settings (right click on a chat tab > Settings)
 -- that shows panel. Blizzard shows its panels by the button ID as index into CHAT_CONFIG_CATEGORIES
 -- (ChatConfigFrame_Shared.lua). That table is not touched, to keep taint out: the own button calls
