@@ -56,4 +56,5 @@ read_globals = {
     "ChatConfigBackgroundFrame",
     "ChatConfigCategoryFrame",
     "ChatConfigCategoryFrameButton4",
+    "ChatFrameMenuButton",
 }
