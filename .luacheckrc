@@ -32,6 +32,7 @@ read_globals = {
     "GetAddOnMemoryUsage",
     "UpdateAddOnMemoryUsage",
     "GetChannelList",
+    "GetChannelName",
     "GetLocale",
     "InCombatLockdown",
     "IsControlKeyDown",
