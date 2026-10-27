@@ -14,6 +14,7 @@
 ## X-Website: https://github.com/Clausi/gryphonChat
 ## X-Curse-Project-ID: 1764734
 ## X-Wago-ID: 4N2bM0NL
+## X-WoWI-ID: 27279
 
 # Localization (enUS must be loaded first, it is the fallback)
 Locales\enUS.lua
