@@ -1,0 +1,48 @@
+[size="5"][b]GryphonChat[/b][/size]
+
+[b]A better chat for World of Warcraft: Retail, Classic Era, Anniversary and MoP Classic.[/b]
+
+GryphonChat extends the default chat instead of replacing it. Everything stays where you know it, with a few tools that make chatting easier.
+
+[size="4"][b]Features[/b][/size]
+
+[size="3"][b]Clickable web links[/b][/size]
+Web addresses in chat ([i]https://...[/i], [i]www....[/i]) become clickable links. One click opens a small window with the address selected: press [b]Ctrl+C[/b] and paste it into your browser.
+
+[size="3"][b]Copy the chat[/b][/size]
+A new button next to every chat window, including whisper windows, shows the whole chat of that window as plain text. Everything is selected right away, so [b]Ctrl+C[/b] copies it.
+
+[size="3"][b]Longer chat history[/b][/size]
+Chat windows normally keep only the last 128 lines. With [b]/gryphonchat lines <number>[/b] you choose how many lines they keep for the current character, up to 5000.
+
+[size="3"][b]Short channel names[/b][/size]
+Turn long channel names into short ones: [i][1. General - Elwynn Forest][/i] becomes [i][1. G][/i], [i][4. LookingForGroup][/i] becomes [i][4. LfG][/i]. Blizzard's channels come with short names, and you can give every channel your own, e.g. [b]/gryphonchat channels set Global G[/b]. Off by default, turn it on in the options or with [b]/gryphonchat channels on[/b].
+
+[size="3"][b]Options[/b][/size]
+All settings are on their own page in the game options ([b]Esc > Options > AddOns > GryphonChat[/b]). The short channel names can also be set right in the chat settings: right click on a chat tab, [b]Settings[/b], then [b]GryphonChat[/b].
+
+[size="4"][b]Slash commands[/b][/size]
+[list]
+[*][b]/gryphonchat[/b] - Show all commands
+[*][b]/gryphonchat options[/b] - Open the options
+[*][b]/gryphonchat lines <50-5000>[/b] - How many lines every chat window of this character keeps (default 128)
+[*][b]/gryphonchat channels[/b] - Show your channels and their short names
+[*][b]/gryphonchat channels on|off[/b] - Short channel names for this character
+[*][b]/gryphonchat channels set <channel> <short name>[/b] - Your own short name for a channel
+[*][b]/gryphonchat channels reset <channel>[/b] - Remove your own short name
+[*][b]/gryphonchat notify on|off[/b] - Turn the automatic messages of this character on or off
+[/list]
+
+[size="4"][b]Good to know[/b][/size]
+[list]
+[*]Made for [b]Retail[/b], [b]Classic Era[/b], [b]Classic Anniversary[/b] and [b]MoP Classic[/b]. Support for [b]WoW Forever[/b] follows later.
+[*]Languages: English, German, French.
+[/list]
+
+[size="4"][b]Feedback & source code[/b][/size]
+Found a bug or have an idea? Please open an issue on GitHub:
+[b][url="https://github.com/Clausi/gryphonChat/issues"]github.com/Clausi/gryphonChat/issues[/url][/b]
+
+Source code and changelog: [url="https://github.com/Clausi/gryphonChat"]github.com/Clausi/gryphonChat[/url]
+
+Also available on [url="https://www.curseforge.com/projects/1764734"]CurseForge[/url] and [url="https://addons.wago.io/addons/gryphonchat"]Wago Addons[/url].
