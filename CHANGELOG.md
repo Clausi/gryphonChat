@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Releases are also published on [WoWInterface](https://www.wowinterface.com/downloads/info27279).
+
 ## [0.3.0] - 2026-10-26
 
 Now for WoW Retail as well.

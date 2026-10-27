@@ -45,3 +45,5 @@ Found a bug or have an idea? Please open an issue on GitHub:
 **[github.com/Clausi/gryphonChat/issues](https://github.com/Clausi/gryphonChat/issues)**
 
 Source code and changelog: [github.com/Clausi/gryphonChat](https://github.com/Clausi/gryphonChat)
+
+Also available on [CurseForge](https://www.curseforge.com/projects/1764734), [Wago Addons](https://addons.wago.io/addons/gryphonchat) and [WoWInterface](https://www.wowinterface.com/downloads/info27279).
