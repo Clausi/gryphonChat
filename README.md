@@ -25,9 +25,9 @@ for WoWInterface (BBCode) in [docs/addon-description-wowinterface.txt](docs/addo
 | Anniversary | 20506     | Supported |
 | MoP Classic | 50504     | Supported |
 | Retail      | 120105    | Supported |
-| Forever     | 16001     | Planned   |
+| Forever     | 16001     | Untested  |
 
-One package works on all supported clients. WoW Forever follows once it is released.
+One package works on all supported clients. WoW Forever is listed in the TOC but not tested yet.
 Client differences are handled in `Core/Compat.lua`.
 
 ## Installation

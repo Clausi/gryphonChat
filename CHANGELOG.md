@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for WoW Forever, in the same package as the other clients.
+
 ## [0.3.1] - 2026-10-27
 
 Now on WoWInterface as well.

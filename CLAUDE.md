@@ -20,9 +20,10 @@ file only adds what is specific to GryphonChat.
   filters are skipped for secret event arguments, whisper window names can be secret). The chat
   settings and the message filter API were the same when Retail was added. Check the `live` branch
   as well when hooking Blizzard code.
-- **WoW Forever (16001) follows** once it is released; it cannot be tested before that. Keep it in
-  mind for every design decision (Mainline UI and API, "First Surname" names without realm, secret
-  values).
+- **Listed: WoW Forever** (16001, `_forever_`, product `wowf` on Blizzard's version servers),
+  released and listed in `## Interface:`, but not tested in-game yet; confirm the build with
+  `/dump GetBuildInfo()`. Keep it in mind for every design decision (Mainline UI and API,
+  "First Surname" names without realm, secret values).
 - Therefore every client difference already goes through `ns.Compat`, including chat frame
   internals and sending messages, even if all clients use the same code there yet.
 - `Core/Names.lua` does not exist yet. When a feature needs names, take over `Core/Names.lua` and
