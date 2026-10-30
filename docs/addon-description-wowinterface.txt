@@ -1,6 +1,6 @@
 [size="5"][b]GryphonChat[/b][/size]
 
-[b]A better chat for World of Warcraft: Retail, Classic Era, Anniversary and MoP Classic.[/b]
+[b]A better chat for World of Warcraft: Retail, WoW Forever, Classic Era, Anniversary and MoP Classic.[/b]
 
 GryphonChat extends the default chat instead of replacing it. Everything stays where you know it, with a few tools that make chatting easier.
 
@@ -35,7 +35,7 @@ All settings are on their own page in the game options ([b]Esc > Options > AddOn
 
 [size="4"][b]Good to know[/b][/size]
 [list]
-[*]Made for [b]Retail[/b], [b]Classic Era[/b], [b]Classic Anniversary[/b] and [b]MoP Classic[/b]. Support for [b]WoW Forever[/b] follows later.
+[*]Made for [b]Retail[/b], [b]WoW Forever[/b], [b]Classic Era[/b], [b]Classic Anniversary[/b] and [b]MoP Classic[/b].
 [*]Languages: English, German, French.
 [/list]
 
