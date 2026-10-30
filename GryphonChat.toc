@@ -5,7 +5,7 @@
 ## Notes-frFR: Ajoute des fonctions supplémentaires au chat standard.
 ## Category: Chat
 ## Author: cklausl
-## Version: 0.3.1
+## Version: 0.4.0
 ## SavedVariables: GryphonChatDB
 ## SavedVariablesPerCharacter: GryphonChatCharDB
 ## IconTexture: Interface\Icons\Ability_Warrior_BattleShout
