@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-30
+
+Now for WoW Forever as well.
+
 ### Added
 
 - Support for WoW Forever, in the same package as the other clients.
@@ -63,7 +67,8 @@ First release, for WoW Classic Anniversary.
   for the current character.
 - English, German and French translation.
 
-[Unreleased]: https://github.com/Clausi/gryphonChat/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/Clausi/gryphonChat/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/Clausi/gryphonChat/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/Clausi/gryphonChat/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Clausi/gryphonChat/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Clausi/gryphonChat/compare/v0.1.0...v0.2.0
