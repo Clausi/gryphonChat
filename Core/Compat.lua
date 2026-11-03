@@ -164,3 +164,15 @@ function Compat.IsAutoCompleteShownFor(editBox)
     local box = AutoCompleteBox
     return box ~= nil and box:IsShown() and box.parent == editBox
 end
+
+-- Calls onEnter(chatFrame, link) and onLeave(chatFrame) when the mouse enters or leaves a link in a
+-- chat window. ChatFrameMixin:OnHyperlinkEnter and OnHyperlinkLeave (ChatFrame.lua) pass both to
+-- the EventRegistry, so no chat frame script is touched. The link may be a secret value.
+function Compat.RegisterChatHyperlinkHover(owner, onEnter, onLeave)
+    EventRegistry:RegisterCallback("ChatFrame.OnHyperlinkEnter", function(_, chatFrame, link)
+        onEnter(chatFrame, link)
+    end, owner)
+    EventRegistry:RegisterCallback("ChatFrame.OnHyperlinkLeave", function(_, chatFrame)
+        onLeave(chatFrame)
+    end, owner)
+end

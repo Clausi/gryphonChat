@@ -79,3 +79,6 @@ L["OPTIONS_ARROW_KEYS_TOOLTIP"] = "Die Pfeiltasten hoch und runter in der Chat-E
 L["OPTIONS_KEEP_HISTORY"] = "Eingabeverlauf behalten"
 L["OPTIONS_KEEP_HISTORY_TOOLTIP"] = "Die letzten 32 Eingaben im Chat bleiben nach Logout oder Reload im "
     .. "Eingabeverlauf. Aus: Sie werden beim Logout gelöscht. Für diesen Charakter."
+L["OPTIONS_LINK_TOOLTIPS"] = "Link-Tooltips beim Überfahren"
+L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"] = "Zeigt den Tooltip von Gegenstands-, Zauber-, Quest-, Erfolgs- und ähnlichen "
+    .. "Links im Chat, solange die Maus darüber ist, ohne Klick. Für diesen Charakter."
