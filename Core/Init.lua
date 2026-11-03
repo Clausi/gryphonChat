@@ -32,6 +32,8 @@ ns.charDefaults = {
         -- Saved input history, oldest line first.
         history = {},
     },
+    -- Tooltips of item, spell, ... links in chat on mouseover. Change in the options.
+    linkTooltips = true,
 }
 
 -- Registers a module. A module may implement:

@@ -55,6 +55,16 @@ local function RegisterGeneralSettings()
         end,
         ChatInput.SetKeepHistory)
     Settings.CreateCheckbox(category, keepHistory, L["OPTIONS_KEEP_HISTORY_TOOLTIP"])
+
+    local linkTooltips = RegisterProxySetting("LINK_TOOLTIPS", Settings.VarType.Boolean, L["OPTIONS_LINK_TOOLTIPS"],
+        ns.charDefaults.linkTooltips,
+        function()
+            return ns.charDb.linkTooltips
+        end,
+        function(value)
+            ns.charDb.linkTooltips = value
+        end)
+    Settings.CreateCheckbox(category, linkTooltips, L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"])
 end
 
 local function RegisterChannelNamesPage()

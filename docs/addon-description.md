@@ -18,6 +18,9 @@ Chat windows normally keep only the last 128 lines. With `/gryphonchat lines <nu
 ### Input history
 The up and down arrow keys in the chat input line go through what you entered before, no need to hold **Alt**. The last 32 lines stay there after a logout or reload.
 
+### Link tooltips
+Move the mouse over an item, spell, quest or achievement link in chat and its tooltip appears, no click needed.
+
 ### Short channel names
 Turn long channel names into short ones: *[1. General - Elwynn Forest]* becomes *[1. G]*, *[4. LookingForGroup]* becomes *[4. LfG]*. Blizzard's channels come with short names, and you can give every channel your own, e.g. `/gryphonchat channels set Global G`. Off by default, turn it on in the options or with `/gryphonchat channels on`.
 

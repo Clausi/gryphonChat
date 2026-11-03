@@ -80,3 +80,6 @@ L["OPTIONS_ARROW_KEYS_TOOLTIP"] = "The up and down arrow keys in the chat input 
 L["OPTIONS_KEEP_HISTORY"] = "Keep the input history"
 L["OPTIONS_KEEP_HISTORY_TOOLTIP"] = "The last 32 lines entered in chat stay in the input history after a logout or "
     .. "reload. Off: they are deleted on logout. For this character."
+L["OPTIONS_LINK_TOOLTIPS"] = "Link tooltips on mouseover"
+L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"] = "Shows the tooltip of item, spell, quest, achievement and similar links in chat "
+    .. "while the mouse is over them, without a click. For this character."
