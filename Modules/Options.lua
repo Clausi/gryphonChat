@@ -38,6 +38,23 @@ local function RegisterGeneralSettings()
     local sliderOptions = Settings.CreateSliderOptions(ChatHistory.MIN_LINES, ChatHistory.MAX_LINES, 1)
     sliderOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
     Settings.CreateSlider(category, chatLines, sliderOptions, L["OPTIONS_CHAT_LINES_TOOLTIP"])
+
+    local ChatInput = ns.modules.ChatInput
+    local arrowKeys = RegisterProxySetting("ARROW_KEYS", Settings.VarType.Boolean, L["OPTIONS_ARROW_KEYS"],
+        ns.charDefaults.chatInput.arrowKeys,
+        function()
+            return ns.charDb.chatInput.arrowKeys
+        end,
+        ChatInput.SetArrowKeys)
+    Settings.CreateCheckbox(category, arrowKeys, L["OPTIONS_ARROW_KEYS_TOOLTIP"])
+
+    local keepHistory = RegisterProxySetting("KEEP_HISTORY", Settings.VarType.Boolean, L["OPTIONS_KEEP_HISTORY"],
+        ns.charDefaults.chatInput.keepHistory,
+        function()
+            return ns.charDb.chatInput.keepHistory
+        end,
+        ChatInput.SetKeepHistory)
+    Settings.CreateCheckbox(category, keepHistory, L["OPTIONS_KEEP_HISTORY_TOOLTIP"])
 end
 
 local function RegisterChannelNamesPage()

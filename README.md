@@ -9,6 +9,8 @@ A World of Warcraft addon that extends the default chat.
 - **Copy chat:** a button in the button bar of every chat window opens its whole content as plain
   text to copy.
 - **Longer chat history:** the number of lines each chat window keeps is configurable (default 128).
+- **Input history:** the arrow keys go through the lines entered before without Alt, and the last
+  32 lines are kept across logouts and reloads.
 - **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
   channels have default short names, every channel can get an own one.
 - **Options:** all settings on an own page in the game options, the short channel names also in the
@@ -86,6 +88,7 @@ GryphonChat/
     ├── ChatLinks.lua      # Turns web addresses in chat into links that open the copy dialog
     ├── ChatCopy.lua       # Copy button in the button bar of every chat window
     ├── ChatHistory.lua    # Number of lines every chat window keeps ("/gryphonchat lines")
+    ├── ChatInput.lua      # Input line: arrow keys without Alt, input history kept across sessions
     ├── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
     ├── ChannelNamesEditor.lua  # Editor for the short channel names, used by Options and ChatConfig
     ├── Options.lua        # Options page in the game settings ("/gryphonchat options")
