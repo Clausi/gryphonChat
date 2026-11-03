@@ -152,3 +152,15 @@ function Compat.AddChatConfigCategory(text, panel)
     end)
     return true
 end
+
+-- Input line (edit box) of a chat window (parentKey "editBox" in FloatingChatFrame.xml).
+function Compat.GetChatEditBox(chatFrame)
+    return chatFrame.editBox
+end
+
+-- True if the name suggestions (AutoCompleteBox, e.g. for "/w Na") are shown for editBox. While
+-- they are, AutoCompleteEditBox_OnArrowPressed uses the arrow keys to choose a name.
+function Compat.IsAutoCompleteShownFor(editBox)
+    local box = AutoCompleteBox
+    return box ~= nil and box:IsShown() and box.parent == editBox
+end

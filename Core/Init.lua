@@ -23,6 +23,15 @@ ns.charDefaults = {
         -- Own short names, keyed by lowercase channel name: { name = "Global", shortName = "G" }.
         custom = {},
     },
+    -- Input line of the chat windows. Change in the options.
+    chatInput = {
+        -- Arrow keys go through the input history without Alt.
+        arrowKeys = true,
+        -- The input history is kept across logouts and reloads.
+        keepHistory = true,
+        -- Saved input history, oldest line first.
+        history = {},
+    },
 }
 
 -- Registers a module. A module may implement:

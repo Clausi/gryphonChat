@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The up and down arrow keys in the chat input line go through the input history without Alt, and
+  the history (the last 32 lines) is kept across logouts and reloads. Both can be turned off in the
+  options.
+
 ## [0.4.0] - 2026-10-30
 
 Now for WoW Forever as well.

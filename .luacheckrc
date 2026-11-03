@@ -58,4 +58,5 @@ read_globals = {
     "ChatConfigCategoryFrame",
     "ChatConfigCategoryFrameButton4",
     "ChatFrameMenuButton",
+    "AutoCompleteBox",
 }
