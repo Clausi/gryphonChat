@@ -34,6 +34,13 @@ ns.charDefaults = {
     },
     -- Tooltips of item, spell, ... links in chat on mouseover. Change in the options.
     linkTooltips = true,
+    -- Mouse wheel in the chat windows. Change in the options.
+    chatScroll = {
+        -- Shift: to the first or last line, Ctrl: a page at a time.
+        modifiers = true,
+        -- Seconds after the last wheel scroll until the chat scrolls back down, 0 for never.
+        bottomDelay = 0,
+    },
 }
 
 -- Registers a module. A module may implement:

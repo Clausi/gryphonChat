@@ -65,6 +65,32 @@ local function RegisterGeneralSettings()
             ns.charDb.linkTooltips = value
         end)
     Settings.CreateCheckbox(category, linkTooltips, L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"])
+
+    local ChatScroll = ns.modules.ChatScroll
+    local scrollModifiers = RegisterProxySetting("SCROLL_MODIFIERS", Settings.VarType.Boolean,
+        L["OPTIONS_SCROLL_MODIFIERS"], ns.charDefaults.chatScroll.modifiers,
+        function()
+            return ns.charDb.chatScroll.modifiers
+        end,
+        function(value)
+            ns.charDb.chatScroll.modifiers = value
+        end)
+    Settings.CreateCheckbox(category, scrollModifiers, L["OPTIONS_SCROLL_MODIFIERS_TOOLTIP"])
+
+    local bottomDelay = RegisterProxySetting("SCROLL_BOTTOM_DELAY", Settings.VarType.Number,
+        L["OPTIONS_SCROLL_BOTTOM_DELAY"], ns.charDefaults.chatScroll.bottomDelay,
+        function()
+            return ns.charDb.chatScroll.bottomDelay
+        end,
+        function(value)
+            ChatScroll.SetBottomDelay(floor(value + 0.5))
+        end)
+    local delayOptions = Settings.CreateSliderOptions(0, ChatScroll.MAX_BOTTOM_DELAY, ChatScroll.BOTTOM_DELAY_STEP)
+    delayOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, function(value)
+        local seconds = floor(value + 0.5)
+        return seconds == 0 and L["OPTIONS_OFF"] or format(L["OPTIONS_SECONDS"], seconds)
+    end)
+    Settings.CreateSlider(category, bottomDelay, delayOptions, L["OPTIONS_SCROLL_BOTTOM_DELAY_TOOLTIP"])
 end
 
 local function RegisterChannelNamesPage()

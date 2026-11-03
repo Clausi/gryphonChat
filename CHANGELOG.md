@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   options.
 - Item, spell, quest, achievement and similar links in chat show their tooltip on mouseover. Can be
   turned off in the options.
+- Shift + mouse wheel jumps to the first or last line of a chat window, Ctrl + mouse wheel scrolls
+  a page. Optionally a chat window scrolls back to the newest line some time after the last mouse
+  wheel scroll (off by default). Both in the options.
 
 ## [0.4.0] - 2026-10-30
 

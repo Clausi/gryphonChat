@@ -13,6 +13,8 @@ A World of Warcraft addon that extends the default chat.
   32 lines are kept across logouts and reloads.
 - **Link tooltips:** item, spell, quest, achievement and similar links in chat show their tooltip
   on mouseover.
+- **Mouse wheel:** with Shift to the first or last line, with Ctrl a page at a time; optionally back
+  to the newest line some time after scrolling.
 - **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
   channels have default short names, every channel can get an own one.
 - **Options:** all settings on an own page in the game options, the short channel names also in the
@@ -92,6 +94,7 @@ GryphonChat/
     ├── ChatHistory.lua    # Number of lines every chat window keeps ("/gryphonchat lines")
     ├── ChatInput.lua      # Input line: arrow keys without Alt, input history kept across sessions
     ├── LinkTooltips.lua   # Tooltips of item, spell, ... links in chat on mouseover
+    ├── ChatScroll.lua     # Mouse wheel with Shift/Ctrl, scrolling back down after a while
     ├── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
     ├── ChannelNamesEditor.lua  # Editor for the short channel names, used by Options and ChatConfig
     ├── Options.lua        # Options page in the game settings ("/gryphonchat options")
