@@ -36,6 +36,7 @@ read_globals = {
     "GetLocale",
     "InCombatLockdown",
     "IsControlKeyDown",
+    "IsShiftKeyDown",
 
     -- UI helpers
     "ChatFrameUtil",

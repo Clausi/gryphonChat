@@ -176,3 +176,46 @@ function Compat.RegisterChatHyperlinkHover(owner, onEnter, onLeave)
         onLeave(chatFrame)
     end, owner)
 end
+
+-- Calls callback(chatFrame, delta, scrolled) after a chat window scrolled by mouse wheel; scrolled
+-- is the signed amount of lines Blizzard's handler scrolled it (positive is up, to older lines).
+-- Classic: OnMouseWheel is FloatingChatFrame_OnMouseScroll, set on VARIABLES_LOADED (ChatFrame
+-- OnEvent) and for new whisper windows, and calls ScrollUp/ScrollDown, i.e. ScrollByAmount(+-1).
+-- Mainline: ScrollUtil.InitScrollingMessageFrameWithScrollBar sets it in OnLoad and calls
+-- ScrollByAmount(+-3). Both only when the CVar chatMouseScroll is on. The script is hooked, not
+-- replaced; a hook on ScrollByAmount records the amount (all scrolling ends there, see
+-- ScrollingMessageFrame.lua). AddMessage also scrolls through it, so it is not the hook for the wheel.
+local wheelHooks = {}
+local scrolledAmounts = {}
+
+local function RecordScrolledAmount(chatFrame, amount)
+    scrolledAmounts[chatFrame] = amount
+end
+
+function Compat.HookChatMouseWheel(callback)
+    local function HookFrame(chatFrame)
+        -- A later SetScript replaces the hooked script, so it is hooked again then.
+        local script = chatFrame:GetScript("OnMouseWheel")
+        if not script or wheelHooks[chatFrame] == script then
+            return
+        end
+        if wheelHooks[chatFrame] == nil then
+            hooksecurefunc(chatFrame, "ScrollByAmount", RecordScrolledAmount)
+        end
+        chatFrame:HookScript("OnMouseWheel", function(self, delta)
+            local scrolled = scrolledAmounts[self] or 0
+            scrolledAmounts[self] = nil
+            callback(self, delta, scrolled)
+        end)
+        wheelHooks[chatFrame] = chatFrame:GetScript("OnMouseWheel")
+    end
+
+    Compat.HookChatFrames(HookFrame)
+    -- Classic sets the script on VARIABLES_LOADED, which may come after PLAYER_LOGIN. The chat
+    -- frames handle the event after this handler, so the check waits a frame.
+    ns:RegisterEvent("VARIABLES_LOADED", function()
+        C_Timer.After(0, function()
+            Compat.ForEachChatFrame(HookFrame)
+        end)
+    end)
+end

@@ -21,6 +21,9 @@ The up and down arrow keys in the chat input line go through what you entered be
 ### Link tooltips
 Move the mouse over an item, spell, quest or achievement link in chat and its tooltip appears, no click needed.
 
+### Mouse wheel
+**Shift** + mouse wheel jumps to the first or last line of a chat window, **Ctrl** + mouse wheel scrolls a page at a time. If you like, a chat window scrolls back to the newest line on its own some time after you scrolled up.
+
 ### Short channel names
 Turn long channel names into short ones: *[1. General - Elwynn Forest]* becomes *[1. G]*, *[4. LookingForGroup]* becomes *[4. LfG]*. Blizzard's channels come with short names, and you can give every channel your own, e.g. `/gryphonchat channels set Global G`. Off by default, turn it on in the options or with `/gryphonchat channels on`.
 
