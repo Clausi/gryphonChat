@@ -20,9 +20,9 @@ file only adds what is specific to GryphonChat.
   filters are skipped for secret event arguments, whisper window names can be secret). The chat
   settings and the message filter API were the same when Retail was added. Check the `live` branch
   as well when hooking Blizzard code.
-- **Listed: WoW Forever** (16001, `_forever_`, product `wowf` on Blizzard's version servers),
-  released and listed in `## Interface:`, but not tested in-game yet; confirm the build with
-  `/dump GetBuildInfo()`. Keep it in mind for every design decision (Mainline UI and API,
+- **Listed: WoW Forever** (16001, `_forever_`, `forever` branch of wow-ui-source), released and
+  listed in `## Interface:`, but not tested in-game yet. Check the `forever` branch as well when
+  hooking Blizzard code. Keep it in mind for every design decision (Mainline UI and API,
   "First Surname" names without realm, secret values).
 - Therefore every client difference already goes through `ns.Compat`, including chat frame
   internals and sending messages, even if all clients use the same code there yet.
@@ -36,3 +36,8 @@ file only adds what is specific to GryphonChat.
 ## Saved variables
 
 `GryphonChatDB` (account-wide) and `GryphonChatCharDB` (per character, e.g. a chat history).
+
+## Commit scopes
+
+`channel-names`, `chat-config`, `chat-copy`, `chat-history`, `chat-input`, `chat-links`,
+`chat-scroll`, `link-tooltips`, `copy-frame`, `options`, `core`, `locales`, `toc`.
