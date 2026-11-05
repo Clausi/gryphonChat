@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-05
+
+First stable release, with no changes to the addon since 0.5.0.
+
 ## [0.5.0] - 2026-11-03
 
 Input history, link tooltips and a handier mouse wheel.
@@ -82,7 +86,8 @@ First release, for WoW Classic Anniversary.
   for the current character.
 - English, German and French translation.
 
-[Unreleased]: https://github.com/Clausi/gryphonChat/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/Clausi/gryphonChat/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Clausi/gryphonChat/compare/v0.5.0...v1.0.0
 [0.5.0]: https://github.com/Clausi/gryphonChat/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Clausi/gryphonChat/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/Clausi/gryphonChat/compare/v0.3.0...v0.3.1
