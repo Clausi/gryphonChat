@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-06
+
+Choose how the channel language looks.
+
 ### Added
 
 - The look of the language after a short channel name can be chosen: "T (EN)", "T-EN", "T/EN" or
