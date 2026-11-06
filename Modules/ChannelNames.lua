@@ -21,6 +21,8 @@ local DEFAULT_CHANNELS = {
     "GUILD_RECRUITMENT",
     -- Retail only: "Trade (Services) - <city>".
     "SERVICES",
+    -- Forever only: "Trade (Local) - <city>".
+    "TRADE_LOCAL",
 }
 
 ChannelNames.MAX_SHORT_NAME_LENGTH = 16
