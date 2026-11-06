@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-06
+
+Shorter channel names for WoW Forever.
+
 ### Added
 
 - The WoW Forever channel "Trade (Local)" has a default short name.
