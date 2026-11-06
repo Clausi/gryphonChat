@@ -139,7 +139,9 @@ Lint with [luacheck](https://github.com/lunarmodules/luacheck). Place `luacheck.
 - `/gryphonchat channels` – show the joined channels with their short names
 - `/gryphonchat channels on|off` – short channel names for the current character, default off
 - `/gryphonchat channels language on|off` – language code after the short name on WoW Forever, e.g.
-  `T [EN]`, default on
+  `T (EN)`, default on
+- `/gryphonchat channels language round|dash|slash|square` – look of the language: `T (EN)` (default),
+  `T-EN`, `T/EN` or `T [EN]`
 - `/gryphonchat channels set <channel|number> <short name>` – own short name for a channel, e.g.
   `/gryphonchat channels set Global G`
 - `/gryphonchat channels reset <channel|number>` – remove the own short name

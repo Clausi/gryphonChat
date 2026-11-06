@@ -2,8 +2,9 @@ local _, ns = ...
 local L = ns.L
 
 -- Editor for the short channel names (Modules/ChannelNames.lua): checkboxes to turn them and the
--- language code on, and one row per channel with an edit box for its short name. The options page
--- (Modules/Options.lua) and the chat settings (Modules/ChatConfig.lua) each create one.
+-- language code on, a dropdown for the style of the language code, and one row per channel with an
+-- edit box for its short name. The options page (Modules/Options.lua) and the chat settings
+-- (Modules/ChatConfig.lua) each create one.
 local ChannelNamesEditor = {}
 ns.ChannelNamesEditor = ChannelNamesEditor
 
@@ -11,6 +12,7 @@ local ROW_HEIGHT = 26
 local NAME_WIDTH = 220
 local EDIT_WIDTH = 110
 local RESET_WIDTH = 110
+local LANGUAGE_DROPDOWN_WIDTH = 110
 -- Room for the scroll bar of ScrollFrameTemplate on the right.
 local SCROLL_BAR_WIDTH = 30
 
@@ -119,6 +121,8 @@ end
 local function Refresh(editor)
     editor.checkbox:SetChecked(ns.modules.ChannelNames.IsEnabled())
     editor.languageCheckbox:SetChecked(ns.modules.ChannelNames.IsLanguageShown())
+    editor.languageDropdown:SetEnabled(ns.modules.ChannelNames.IsLanguageShown())
+    editor.languageDropdown:GenerateMenu()
     editor.errorText:SetText("")
 
     local entries = GetEntries()
@@ -133,6 +137,22 @@ local function Refresh(editor)
     end
     editor.content:SetHeight(math.max(#entries, 1) * ROW_HEIGHT)
     editor.emptyText:SetShown(#entries == 0)
+end
+
+local function IsLanguageStyle(style)
+    return ns.modules.ChannelNames.GetLanguageStyle() == style
+end
+
+local function SetLanguageStyle(style)
+    ns.modules.ChannelNames.SetLanguageStyle(style)
+end
+
+local function GenerateLanguageMenu(_, rootDescription)
+    local ChannelNames = ns.modules.ChannelNames
+    for _, style in ipairs(ChannelNames.LANGUAGE_STYLES) do
+        rootDescription:CreateRadio(ChannelNames.GetLanguageStyleExample(style), IsLanguageStyle, SetLanguageStyle,
+            style)
+    end
 end
 
 -- Creates an editor in parent. Anchor it with SetPoint or SetAllPoints; it fills the space it gets
@@ -156,8 +176,15 @@ function ChannelNamesEditor.Create(parent)
     languageCheckbox.Text:SetText(L["CHANNELS_EDITOR_LANGUAGE"])
     languageCheckbox:SetScript("OnClick", function(self)
         ns.modules.ChannelNames.SetLanguageShown(self:GetChecked() and true or false)
+        editor.languageDropdown:SetEnabled(self:GetChecked())
     end)
     editor.languageCheckbox = languageCheckbox
+
+    local languageDropdown = CreateFrame("DropdownButton", nil, editor, "WowStyle1DropdownTemplate")
+    languageDropdown:SetWidth(LANGUAGE_DROPDOWN_WIDTH)
+    languageDropdown:SetPoint("LEFT", languageCheckbox.Text, "RIGHT", 12, 0)
+    languageDropdown:SetupMenu(GenerateLanguageMenu)
+    editor.languageDropdown = languageDropdown
 
     local description = editor:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
     description:SetPoint("TOPLEFT", languageCheckbox, "BOTTOMLEFT", 4, -4)

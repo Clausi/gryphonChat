@@ -38,6 +38,7 @@ All settings are on their own page in the game options ([b]Esc > Options > AddOn
 [*][b]/gryphonchat channels[/b] - Show your channels and their short names
 [*][b]/gryphonchat channels on|off[/b] - Short channel names for this character
 [*][b]/gryphonchat channels language on|off[/b] - Language after the short name on WoW Forever
+[*][b]/gryphonchat channels language round|dash|slash|square[/b] - Look of the language: T (EN), T-EN, T/EN or T [EN]
 [*][b]/gryphonchat channels set <channel> <short name>[/b] - Your own short name for a channel
 [*][b]/gryphonchat channels reset <channel>[/b] - Remove your own short name
 [*][b]/gryphonchat notify on|off[/b] - Turn the automatic messages of this character on or off
