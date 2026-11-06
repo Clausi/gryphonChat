@@ -20,8 +20,10 @@ ns.charDefaults = {
     -- Short channel names in chat. Change with "/gryphonchat channels".
     channelNames = {
         enabled = false,
-        -- Language code after the short name of a channel with a language, e.g. "T [EN]".
+        -- Language code after the short name of a channel with a language, e.g. "T (EN)".
         showLanguage = true,
+        -- How the language code is shown, see ChannelNames.LANGUAGE_STYLES.
+        languageStyle = "round",
         -- Own short names, keyed by lowercase channel name: { name = "Global", shortName = "G" }.
         custom = {},
     },

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The look of the language after a short channel name can be chosen: "T (EN)", "T-EN", "T/EN" or
+  "T [EN]", in the options or with `/gryphonchat channels language <style>`.
+
+### Changed
+
+- The language of a WoW Forever channel is in round brackets by default: "T (EN)" instead of
+  "T [EN]".
+
 ## [1.1.0] - 2026-11-06
 
 Shorter channel names for WoW Forever.

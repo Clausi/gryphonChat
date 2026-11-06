@@ -32,6 +32,16 @@ ChannelNames.MAX_SHORT_NAME_LENGTH = 16
 -- are padded to the original length with "|r", which shows nothing.
 local PADDING = "|r"
 
+-- How the language code is added to a short name, in the order of the selection in the editor.
+ChannelNames.LANGUAGE_STYLES = { "round", "dash", "slash", "square" }
+
+local LANGUAGE_FORMATS = {
+    round = "%s (%s)",
+    dash = "%s-%s",
+    slash = "%s/%s",
+    square = "%s [%s]",
+}
+
 -- Forever has channels per language, e.g. "Trade - English 31". The language is only in the name, the
 -- server fills it in and no API returns it. Lowercase word -> code shown after the short name, the
 -- same in all locales. Only "English" has been seen in a channel name so far, the words are Blizzard's
@@ -92,6 +102,23 @@ end
 
 function ChannelNames.SetEnabled(enabled)
     ns.charDb.channelNames.enabled = enabled
+end
+
+function ChannelNames.GetLanguageStyle()
+    return ns.charDb.channelNames.languageStyle
+end
+
+function ChannelNames.SetLanguageStyle(style)
+    ns.charDb.channelNames.languageStyle = style
+end
+
+function ChannelNames.IsLanguageStyle(style)
+    return LANGUAGE_FORMATS[style] ~= nil
+end
+
+-- A language style as it looks in chat: "T (EN)".
+function ChannelNames.GetLanguageStyleExample(style)
+    return format(LANGUAGE_FORMATS[style], L["CHANNEL_TRADE_SHORT"], "EN")
 end
 
 function ChannelNames.IsLanguageShown()
@@ -168,11 +195,11 @@ local function ChannelFilter(_, _, message, sender, language, channelName, ...)
         return false
     end
 
-    local newName = prefix .. shortName
     local languageCode = ChannelNames.IsLanguageShown() and GetLanguageCode(channelName)
     if languageCode then
-        newName = format("%s [%s]", newName, languageCode)
+        shortName = format(LANGUAGE_FORMATS[ChannelNames.GetLanguageStyle()], shortName, languageCode)
     end
+    local newName = prefix .. shortName
     local missing = #channelName - #newName
     if missing > 0 then
         newName = newName .. PADDING:rep(floor((missing + 1) / #PADDING))
@@ -227,7 +254,7 @@ function ChannelNames:OnEnable()
     ns.Compat.AddMessageEventFilter("CHAT_MSG_CHANNEL", ChannelFilter)
 end
 
--- "/gryphonchat channels [on|off|language on|off|set <channel> <short name>|reset <channel>]"
+-- "/gryphonchat channels [on|off|language <on|off|style>|set <channel> <short name>|reset <channel>]"
 ns:RegisterCommand("channels", function(args)
     local action, rest = args:match("^(%S*)%s*(.-)$")
     action = action:lower()
@@ -240,6 +267,9 @@ ns:RegisterCommand("channels", function(args)
     elseif action == "language" and (rest:lower() == "on" or rest:lower() == "off") then
         ChannelNames.SetLanguageShown(rest:lower() == "on")
         ns:Print(ChannelNames.IsLanguageShown() and L["CHANNELS_LANGUAGE_ON"] or L["CHANNELS_LANGUAGE_OFF"])
+    elseif action == "language" and ChannelNames.IsLanguageStyle(rest:lower()) then
+        ChannelNames.SetLanguageStyle(rest:lower())
+        ns:Print(L["CHANNELS_LANGUAGE_STYLE"], ChannelNames.GetLanguageStyleExample(rest:lower()))
     elseif action == "set" then
         local channelArg, shortName = rest:match("^(%S+)%s+(.-)%s*$")
         if not channelArg then
@@ -269,6 +299,7 @@ ns:RegisterCommand("channels", function(args)
         ns:Print(L["HELP_CHANNELS"])
         ns:Print(L["HELP_CHANNELS_TOGGLE"])
         ns:Print(L["HELP_CHANNELS_LANGUAGE"])
+        ns:Print(L["HELP_CHANNELS_LANGUAGE_STYLE"])
         ns:Print(L["HELP_CHANNELS_SET"])
         ns:Print(L["HELP_CHANNELS_RESET"])
     end
@@ -276,6 +307,7 @@ end, {
     L["HELP_CHANNELS"],
     L["HELP_CHANNELS_TOGGLE"],
     L["HELP_CHANNELS_LANGUAGE"],
+    L["HELP_CHANNELS_LANGUAGE_STYLE"],
     L["HELP_CHANNELS_SET"],
     L["HELP_CHANNELS_RESET"],
 })
