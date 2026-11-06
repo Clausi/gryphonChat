@@ -39,6 +39,7 @@ All settings are on their own page in the game options (**Esc > Options > AddOns
 | `/gryphonchat lines <50-5000>` | How many lines every chat window of this character keeps (default 128) |
 | `/gryphonchat channels` | Show your channels and their short names |
 | `/gryphonchat channels on\|off` | Short channel names for this character |
+| `/gryphonchat channels language on\|off` | Language after the short name on WoW Forever |
 | `/gryphonchat channels set <channel> <short name>` | Your own short name for a channel |
 | `/gryphonchat channels reset <channel>` | Remove your own short name |
 | `/gryphonchat notify on\|off` | Turn the automatic messages of this character on or off |

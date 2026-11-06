@@ -19,7 +19,7 @@ local DEFAULT_CHANNELS = {
     "WORLD_DEFENSE",
     "LOOKING_FOR_GROUP",
     "GUILD_RECRUITMENT",
-    -- Retail only: "Trade (Services) - <city>".
+    -- Retail: "Trade (Services) - <city>", Forever: "Trade (Services) - English 31".
     "SERVICES",
     -- Forever only: "Trade (Local) - <city>".
     "TRADE_LOCAL",
@@ -31,6 +31,42 @@ ChannelNames.MAX_SHORT_NAME_LENGTH = 16
 -- registered for the channel (ChatFrameOverrides.lua: "channelLength > strlen(value)"). Short names
 -- are padded to the original length with "|r", which shows nothing.
 local PADDING = "|r"
+
+-- Forever has channels per language, e.g. "Trade - English 31". The language is only in the name, the
+-- server fills it in and no API returns it. Lowercase word -> code shown after the short name, the
+-- same in all locales. Only "English" has been seen in a channel name so far, the words are Blizzard's
+-- language names (LFG_LIST_LANGUAGE_<LOCALE>) of enUS, deDE and frFR. They are listed here because
+-- those strings only have the language of the own client. Any other word gets no code, so that a
+-- zone name is never taken for a language.
+local LANGUAGE_CODES = {
+    english = "EN",
+    englisch = "EN",
+    anglais = "EN",
+    german = "DE",
+    deutsch = "DE",
+    allemand = "DE",
+    french = "FR",
+    ["französisch"] = "FR",
+    ["français"] = "FR",
+    spanish = "ES",
+    spanisch = "ES",
+    espagnol = "ES",
+    russian = "RU",
+    russisch = "RU",
+    russe = "RU",
+    portuguese = "PT",
+    portugiesisch = "PT",
+    portugais = "PT",
+    italian = "IT",
+    italienisch = "IT",
+    italien = "IT",
+    korean = "KO",
+    koreanisch = "KO",
+    ["coréen"] = "KO",
+    chinese = "ZH",
+    chinesisch = "ZH",
+    chinois = "ZH",
+}
 
 -- Lowercase channel name -> default short name, built on first use.
 local defaultShortNames
@@ -56,6 +92,14 @@ end
 
 function ChannelNames.SetEnabled(enabled)
     ns.charDb.channelNames.enabled = enabled
+end
+
+function ChannelNames.IsLanguageShown()
+    return ns.charDb.channelNames.showLanguage
+end
+
+function ChannelNames.SetLanguageShown(shown)
+    ns.charDb.channelNames.showLanguage = shown
 end
 
 -- Default short name of one of Blizzard's channels, or nil.
@@ -100,6 +144,12 @@ function ChannelNames.GetCustomChannels()
     return names
 end
 
+-- "2. Trade - English 31" -> "EN", nil for a channel without language.
+local function GetLanguageCode(channelName)
+    local word = channelName:match("(%S+) %d+$")
+    return word and LANGUAGE_CODES[word:lower()]
+end
+
 -- Event arguments of CHAT_MSG_CHANNEL: arg4 is the channel name with number, e.g.
 -- "1. General - Elwynn Forest", arg8 the channel number.
 local function ChannelFilter(_, _, message, sender, language, channelName, ...)
@@ -119,6 +169,10 @@ local function ChannelFilter(_, _, message, sender, language, channelName, ...)
     end
 
     local newName = prefix .. shortName
+    local languageCode = ChannelNames.IsLanguageShown() and GetLanguageCode(channelName)
+    if languageCode then
+        newName = format("%s [%s]", newName, languageCode)
+    end
     local missing = #channelName - #newName
     if missing > 0 then
         newName = newName .. PADDING:rep(floor((missing + 1) / #PADDING))
@@ -173,7 +227,7 @@ function ChannelNames:OnEnable()
     ns.Compat.AddMessageEventFilter("CHAT_MSG_CHANNEL", ChannelFilter)
 end
 
--- "/gryphonchat channels [on|off|set <channel> <short name>|reset <channel>]"
+-- "/gryphonchat channels [on|off|language on|off|set <channel> <short name>|reset <channel>]"
 ns:RegisterCommand("channels", function(args)
     local action, rest = args:match("^(%S*)%s*(.-)$")
     action = action:lower()
@@ -183,6 +237,9 @@ ns:RegisterCommand("channels", function(args)
     elseif action == "on" or action == "off" then
         ChannelNames.SetEnabled(action == "on")
         ns:Print(ChannelNames.IsEnabled() and L["CHANNELS_ON"] or L["CHANNELS_OFF"])
+    elseif action == "language" and (rest:lower() == "on" or rest:lower() == "off") then
+        ChannelNames.SetLanguageShown(rest:lower() == "on")
+        ns:Print(ChannelNames.IsLanguageShown() and L["CHANNELS_LANGUAGE_ON"] or L["CHANNELS_LANGUAGE_OFF"])
     elseif action == "set" then
         local channelArg, shortName = rest:match("^(%S+)%s+(.-)%s*$")
         if not channelArg then
@@ -211,7 +268,14 @@ ns:RegisterCommand("channels", function(args)
     else
         ns:Print(L["HELP_CHANNELS"])
         ns:Print(L["HELP_CHANNELS_TOGGLE"])
+        ns:Print(L["HELP_CHANNELS_LANGUAGE"])
         ns:Print(L["HELP_CHANNELS_SET"])
         ns:Print(L["HELP_CHANNELS_RESET"])
     end
-end, { L["HELP_CHANNELS"], L["HELP_CHANNELS_TOGGLE"], L["HELP_CHANNELS_SET"], L["HELP_CHANNELS_RESET"] })
+end, {
+    L["HELP_CHANNELS"],
+    L["HELP_CHANNELS_TOGGLE"],
+    L["HELP_CHANNELS_LANGUAGE"],
+    L["HELP_CHANNELS_SET"],
+    L["HELP_CHANNELS_RESET"],
+})

@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - The WoW Forever channel "Trade (Local)" has a default short name.
+- Short channel names keep the language of a WoW Forever channel: "Trade - English 31" becomes
+  "T [EN]". On by default, can be turned off in the options or with
+  `/gryphonchat channels language off`.
 
 ## [1.0.0] - 2026-11-05
 
