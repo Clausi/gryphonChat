@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The WoW Forever channel "Trade (Local)" has a default short name.
+
 ## [1.0.0] - 2026-11-05
 
 First stable release, with no changes to the addon since 0.5.0.
