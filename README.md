@@ -138,6 +138,8 @@ Lint with [luacheck](https://github.com/lunarmodules/luacheck). Place `luacheck.
   what "Copy chat" can show (default 128 as in Blizzard's UI); without a number, shows the setting
 - `/gryphonchat channels` – show the joined channels with their short names
 - `/gryphonchat channels on|off` – short channel names for the current character, default off
+- `/gryphonchat channels language on|off` – language code after the short name on WoW Forever, e.g.
+  `T [EN]`, default on
 - `/gryphonchat channels set <channel|number> <short name>` – own short name for a channel, e.g.
   `/gryphonchat channels set Global G`
 - `/gryphonchat channels reset <channel|number>` – remove the own short name

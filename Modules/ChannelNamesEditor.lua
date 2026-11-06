@@ -1,9 +1,9 @@
 local _, ns = ...
 local L = ns.L
 
--- Editor for the short channel names (Modules/ChannelNames.lua): a checkbox to turn them on and one
--- row per channel with an edit box for its short name. The options page (Modules/Options.lua) and
--- the chat settings (Modules/ChatConfig.lua) each create one.
+-- Editor for the short channel names (Modules/ChannelNames.lua): checkboxes to turn them and the
+-- language code on, and one row per channel with an edit box for its short name. The options page
+-- (Modules/Options.lua) and the chat settings (Modules/ChatConfig.lua) each create one.
 local ChannelNamesEditor = {}
 ns.ChannelNamesEditor = ChannelNamesEditor
 
@@ -118,6 +118,7 @@ end
 
 local function Refresh(editor)
     editor.checkbox:SetChecked(ns.modules.ChannelNames.IsEnabled())
+    editor.languageCheckbox:SetChecked(ns.modules.ChannelNames.IsLanguageShown())
     editor.errorText:SetText("")
 
     local entries = GetEntries()
@@ -149,8 +150,17 @@ function ChannelNamesEditor.Create(parent)
     end)
     editor.checkbox = checkbox
 
+    local languageCheckbox = CreateFrame("CheckButton", nil, editor, "UICheckButtonTemplate")
+    languageCheckbox:SetPoint("TOPLEFT", checkbox, "BOTTOMLEFT")
+    languageCheckbox.Text:SetFontObject("GameFontHighlight")
+    languageCheckbox.Text:SetText(L["CHANNELS_EDITOR_LANGUAGE"])
+    languageCheckbox:SetScript("OnClick", function(self)
+        ns.modules.ChannelNames.SetLanguageShown(self:GetChecked() and true or false)
+    end)
+    editor.languageCheckbox = languageCheckbox
+
     local description = editor:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    description:SetPoint("TOPLEFT", checkbox, "BOTTOMLEFT", 4, -4)
+    description:SetPoint("TOPLEFT", languageCheckbox, "BOTTOMLEFT", 4, -4)
     description:SetPoint("RIGHT")
     description:SetJustifyH("LEFT")
     description:SetText(L["CHANNELS_EDITOR_DESCRIPTION"])
