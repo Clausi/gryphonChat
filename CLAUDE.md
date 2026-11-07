@@ -40,4 +40,4 @@ file only adds what is specific to GryphonChat.
 ## Commit scopes
 
 `channel-names`, `chat-config`, `chat-copy`, `chat-history`, `chat-input`, `chat-links`,
-`chat-scroll`, `link-tooltips`, `copy-frame`, `options`, `core`, `locales`, `toc`.
+`chat-scroll`, `link-tooltips`, `copy-frame`, `options`, `whisper-list`, `core`, `locales`, `toc`.
