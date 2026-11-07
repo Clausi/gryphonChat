@@ -24,6 +24,9 @@ Move the mouse over an item, spell, quest or achievement link in chat and its to
 ### Mouse wheel
 **Shift** + mouse wheel jumps to the first or last line of a chat window, **Ctrl** + mouse wheel scrolls a page at a time. If you like, a chat window scrolls back to the newest line on its own some time after you scrolled up.
 
+### Whisper list
+While whisper windows are open, a button next to the chat lists them, newest first and with their unread messages. Click a name to open the window, and close windows one by one, all read ones or all at once. The list cannot be opened in combat.
+
 ### Short channel names
 Turn long channel names into short ones: *[1. General - Elwynn Forest]* becomes *[1. G]*, *[4. LookingForGroup]* becomes *[4. LfG]*. Blizzard's channels come with short names, and you can give every channel your own, e.g. `/gryphonchat channels set Global G`. Off by default, turn it on in the options or with `/gryphonchat channels on`.
 
@@ -38,6 +41,7 @@ All settings are on their own page in the game options (**Esc > Options > AddOns
 | `/gryphonchat options` | Open the options |
 | `/gryphonchat lines <50-5000>` | How many lines every chat window of this character keeps (default 128) |
 | `/gryphonchat channels` | Show your channels and their short names |
+| `/gryphonchat whispers` | Shows how many whisper windows are open |
 | `/gryphonchat channels on\|off` | Short channel names for this character |
 | `/gryphonchat channels language on\|off` | Language after the short name on WoW Forever |
 | `/gryphonchat channels language round\|dash\|slash\|square` | Look of the language: T (EN), T-EN, T/EN or T [EN] |

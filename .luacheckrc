@@ -20,6 +20,7 @@ read_globals = {
     -- WoW Lua extensions
     "format",
     "floor",
+    "min",
     "strtrim",
     "issecretvalue",
     "hooksecurefunc",
@@ -34,6 +35,7 @@ read_globals = {
     "GetChannelList",
     "GetChannelName",
     "GetLocale",
+    "GetTime",
     "InCombatLockdown",
     "IsControlKeyDown",
     "IsShiftKeyDown",
