@@ -36,6 +36,8 @@ ns.charDefaults = {
         -- Saved input history, oldest line first.
         history = {},
     },
+    -- List of the open whisper windows, with a button next to the chat. Change in the options.
+    whisperList = true,
     -- Tooltips of item, spell, ... links in chat on mouseover. Change in the options.
     linkTooltips = true,
     -- Mouse wheel in the chat windows. Change in the options.

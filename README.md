@@ -15,6 +15,9 @@ A World of Warcraft addon that extends the default chat.
   on mouseover.
 - **Mouse wheel:** with Shift to the first or last line, with Ctrl a page at a time; optionally back
   to the newest line some time after scrolling.
+- **Whisper list:** while whisper windows are open, a button next to the chat lists them, newest first
+  and with their unread messages. A click opens one, and they can be closed one by one, all read
+  ones or all at once.
 - **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
   channels have default short names, every channel can get an own one.
 - **Options:** all settings on an own page in the game options, the short channel names also in the
@@ -95,6 +98,7 @@ GryphonChat/
     ├── ChatInput.lua      # Input line: arrow keys without Alt, input history kept across sessions
     ├── LinkTooltips.lua   # Tooltips of item, spell, ... links in chat on mouseover
     ├── ChatScroll.lua     # Mouse wheel with Shift/Ctrl, scrolling back down after a while
+    ├── WhisperList.lua    # List of the open whisper windows, opens and closes them through secure buttons
     ├── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
     ├── ChannelNamesEditor.lua  # Editor for the short channel names, used by Options and ChatConfig
     ├── Options.lua        # Options page in the game settings ("/gryphonchat options")

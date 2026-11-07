@@ -34,6 +34,7 @@ Modules\ChatHistory.lua
 Modules\ChatInput.lua
 Modules\LinkTooltips.lua
 Modules\ChatScroll.lua
+Modules\WhisperList.lua
 Modules\ChannelNames.lua
 Modules\ChannelNamesEditor.lua
 Modules\Options.lua

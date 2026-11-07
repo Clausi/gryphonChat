@@ -45,6 +45,56 @@ function Compat.HookChatFrames(callback)
     end)
 end
 
+-- True for an open whisper window (FCF_OpenTemporaryWindow). A closed one keeps isTemporary and its
+-- chat type until Blizzard reuses the frame, only inUse is cleared (FCF_Close).
+function Compat.IsWhisperWindow(chatFrame)
+    return chatFrame.isTemporary and chatFrame.inUse
+        and (chatFrame.chatType == "WHISPER" or chatFrame.chatType == "BN_WHISPER") or false
+end
+
+-- Name of a whisper window. Can be a secret value on Mainline (FCF_HasSecretName in
+-- FloatingChatFrame.lua), so it is returned as it is, without a test: pass it to a font string only.
+function Compat.GetWhisperWindowName(chatFrame)
+    return chatFrame.name
+end
+
+-- Prepares a button with the template SecureActionButtonTemplate for SetChatTabClicks. Whether the
+-- action runs on the press or the release depends on the CVar ActionButtonUseKeyDown, so both are
+-- registered (SecureActionButton_OnClick).
+function Compat.InitChatTabClickButton(button)
+    button:RegisterForClicks("LeftButtonDown", "LeftButtonUp")
+    button:SetAttribute("type", "macro")
+end
+
+-- A click on the button clicks the chat tabs of chatFrames with mouseButton, like the player would:
+-- "LeftButton" selects a window, "MiddleButton" closes a whisper window. The tab runs Blizzard's own
+-- code from a secure button, so nothing of it is tainted (see WhisperList.lua). Not in combat. The
+-- macro text holds 1023 characters: more tabs are left for the next click.
+local MAX_TAB_CLICKS = 25
+
+function Compat.SetChatTabClicks(button, chatFrames, mouseButton)
+    local lines = {}
+    for i = 1, min(#chatFrames, MAX_TAB_CLICKS) do
+        lines[i] = format("/click %sTab %s", chatFrames[i]:GetName(), mouseButton)
+    end
+    button:SetAttribute("macrotext", table.concat(lines, "\n"))
+end
+
+-- Calls onStart(chatFrame) when the tab of a chat window starts alerting and onStop(chatFrame) when
+-- it stops. FCF_StartAlertFlash runs for every message while the window is not on screen.
+function Compat.HookChatAlerts(onStart, onStop)
+    hooksecurefunc("FCF_StartAlertFlash", onStart)
+    hooksecurefunc("FCF_StopAlertFlash", onStop)
+end
+
+-- Calls callback() after a chat window was closed. FCF_Close(frame, fallback) can also close the
+-- current window when called without arguments, so it does not name the window.
+function Compat.HookChatWindowClosed(callback)
+    hooksecurefunc("FCF_Close", function()
+        callback()
+    end)
+end
+
 -- Name of a chat window as shown on its tab ("General", "Combat Log", the whisper target, ...).
 function Compat.GetChatFrameName(chatFrame)
     return chatFrame.name or chatFrame:GetName()
@@ -56,7 +106,10 @@ end
 -- bottom: ChatFrame1 uses -2 to 3, the other windows 1 to 3. Duplicate indices raise an error.
 -- Mainline: the bar has no layout. Blizzard anchors the channel button (ChatFrame1) and the minimize
 -- button (undocked windows) to the top and ChatFrameMenuButton to the bottom of ChatFrame1's bar.
--- The own button goes to the bottom, above the menu button; there is room for one.
+-- The own buttons go to the bottom, above the menu button, one above the other. There is room for
+-- one on a short window: create buttons that are only shown at times (SetChatFrameButtonShown) last.
+local lastChatFrameButtons = {}
+
 function Compat.CreateChatFrameButton(chatFrame, layoutIndex)
     local buttonFrame = chatFrame.buttonFrame
     local button = CreateFrame("Button", nil, buttonFrame)
@@ -65,12 +118,28 @@ function Compat.CreateChatFrameButton(chatFrame, layoutIndex)
         button.layoutIndex = layoutIndex
         button.align = "center"
         buttonFrame:MarkDirty()
+    elseif lastChatFrameButtons[buttonFrame] then
+        button:SetPoint("BOTTOM", lastChatFrameButtons[buttonFrame], "TOP")
     elseif ChatFrameMenuButton and ChatFrameMenuButton:GetParent() == buttonFrame then
         button:SetPoint("BOTTOM", ChatFrameMenuButton, "TOP")
     else
         button:SetPoint("BOTTOM")
     end
+    lastChatFrameButtons[buttonFrame] = button
     return button
+end
+
+-- Shows or hides a button from CreateChatFrameButton. The layout of the Classic bar skips hidden
+-- children, but has to be told about the change.
+function Compat.SetChatFrameButtonShown(button, shown)
+    if button:IsShown() == shown then
+        return
+    end
+    button:SetShown(shown)
+    local buttonFrame = button:GetParent()
+    if buttonFrame.MarkDirty then
+        buttonFrame:MarkDirty()
+    end
 end
 
 -- Channels the character has joined, in channel number order: { { number = 1, name = "General" },

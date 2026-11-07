@@ -66,6 +66,14 @@ local function RegisterGeneralSettings()
         end)
     Settings.CreateCheckbox(category, linkTooltips, L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"])
 
+    local whisperList = RegisterProxySetting("WHISPER_LIST", Settings.VarType.Boolean, L["OPTIONS_WHISPER_LIST"],
+        ns.charDefaults.whisperList,
+        function()
+            return ns.charDb.whisperList
+        end,
+        ns.modules.WhisperList.SetEnabled)
+    Settings.CreateCheckbox(category, whisperList, L["OPTIONS_WHISPER_LIST_TOOLTIP"])
+
     local ChatScroll = ns.modules.ChatScroll
     local scrollModifiers = RegisterProxySetting("SCROLL_MODIFIERS", Settings.VarType.Boolean,
         L["OPTIONS_SCROLL_MODIFIERS"], ns.charDefaults.chatScroll.modifiers,

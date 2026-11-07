@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Whisper list: while whisper windows are open, a button next to the chat lists them, newest first
+  and with their unread messages. A click opens a window, and windows can be closed one by one, all
+  read ones or all at once. The list cannot be opened in combat. It can be turned off in the options.
+
 ## [1.2.0] - 2026-11-06
 
 Choose how the channel language looks.
