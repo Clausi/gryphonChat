@@ -3,8 +3,9 @@ local L = ns.L
 local Options = ns:RegisterModule("Options")
 
 -- Options page in Blizzard's settings (Esc > Options > AddOns > GryphonChat): the general settings
--- as a vertical list, the short channel names as a subcategory with the channel names editor. The
--- settings are per character and stay in ns.charDb; proxy settings read and write them there.
+-- as a vertical list, the chat alerts (with the alerts editor) and the short channel names (with the
+-- channel names editor) as subcategories. The settings are per character and stay in ns.charDb;
+-- proxy settings read and write them there.
 
 local category
 
@@ -115,9 +116,25 @@ local function RegisterChannelNamesPage()
     Settings.RegisterCanvasLayoutSubcategory(category, frame, L["OPTIONS_CHANNEL_NAMES"])
 end
 
+-- Chat alerts as a subcategory with the alerts editor: a table of the chat types and their alerts.
+local function RegisterAlertsPage()
+    local frame = CreateFrame("Frame")
+
+    local title = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
+    title:SetPoint("TOPLEFT", 10, -15)
+    title:SetText(L["OPTIONS_ALERTS"])
+
+    local editor = ns.ChatAlertsEditor.Create(frame)
+    editor:SetPoint("TOPLEFT", 10, -50)
+    editor:SetPoint("BOTTOMRIGHT", -10, 10)
+
+    Settings.RegisterCanvasLayoutSubcategory(category, frame, L["OPTIONS_ALERTS"])
+end
+
 function Options:OnInitialize()
     category = Settings.RegisterVerticalLayoutCategory(ns.name)
     RegisterGeneralSettings()
+    RegisterAlertsPage()
     RegisterChannelNamesPage()
     Settings.RegisterAddOnCategory(category)
 end

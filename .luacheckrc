@@ -2,7 +2,7 @@
 -- Retail, Lua 5.1)
 std = "lua51"
 max_line_length = 120
-exclude_files = { ".tools/" }
+exclude_files = { ".tools/", "Libs/" }
 
 -- Methods defined with ":" do not have to use the implicit self.
 self = false
@@ -39,6 +39,13 @@ read_globals = {
     "InCombatLockdown",
     "IsControlKeyDown",
     "IsShiftKeyDown",
+    "PlaySound",
+    "PlaySoundFile",
+    "LibStub",
+    "SOUNDKIT",
+    "Constants",
+    "UnitGUID",
+    "UnitName",
 
     -- UI helpers
     "ChatFrameUtil",
@@ -53,6 +60,7 @@ read_globals = {
 
     -- Frames
     "CHAT_FRAMES",
+    "GENERAL_CHAT_DOCK",
     "DEFAULT_CHAT_FRAME",
     "GameTooltip",
     "UIParent",

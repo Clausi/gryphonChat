@@ -16,6 +16,11 @@
 ## X-Wago-ID: 4N2bM0NL
 ## X-WoWI-ID: 27279
 
+# Libraries (embedded by the packager, see .pkgmeta)
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
+
 # Localization (enUS must be loaded first, it is the fallback)
 Locales\enUS.lua
 Locales\deDE.lua
@@ -35,6 +40,8 @@ Modules\ChatInput.lua
 Modules\LinkTooltips.lua
 Modules\ChatScroll.lua
 Modules\WhisperList.lua
+Modules\ChatAlerts.lua
+Modules\ChatAlertsEditor.lua
 Modules\ChannelNames.lua
 Modules\ChannelNamesEditor.lua
 Modules\Options.lua

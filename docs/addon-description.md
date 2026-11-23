@@ -27,6 +27,9 @@ Move the mouse over an item, spell, quest or achievement link in chat and its to
 ### Whisper list
 While whisper windows are open, a button next to the chat lists them, newest first and with their unread messages. Click a name to open the window, and close windows one by one, all read ones or all at once. The list cannot be opened in combat.
 
+### Chat alerts
+Never miss a message in guild, officer, party, raid, instance or whisper chat. For every chat, and for keywords, choose what happens on a new message: the tab of a chat window in the background glows and shows how many new messages it got, a "New messages" line marks where they start, an arrow marks the messages, the message appears in the middle of the screen, and a sound of your choice plays (also the sounds of other addons through LibSharedMedia, e.g. SharedMedia), only when the chat was quiet before, so a running conversation does not beep on every reply. Keywords and your own name are shown in color in every chat. All of it is in the options under **Chat alerts**.
+
 ### Short channel names
 Turn long channel names into short ones: *[1. General - Elwynn Forest]* becomes *[1. G]*, *[4. LookingForGroup]* becomes *[4. LfG]*. Blizzard's channels come with short names, and you can give every channel your own, e.g. `/gryphonchat channels set Global G`. Off by default, turn it on in the options or with `/gryphonchat channels on`.
 
@@ -42,6 +45,8 @@ All settings are on their own page in the game options (**Esc > Options > AddOns
 | `/gryphonchat lines <50-5000>` | How many lines every chat window of this character keeps (default 128) |
 | `/gryphonchat channels` | Show your channels and their short names |
 | `/gryphonchat whispers` | Shows how many whisper windows are open |
+| `/gryphonchat keywords` | Show the keywords of the chat alerts |
+| `/gryphonchat keywords add\|remove <word>` | Add or remove a keyword |
 | `/gryphonchat channels on\|off` | Short channel names for this character |
 | `/gryphonchat channels language on\|off` | Language after the short name on WoW Forever |
 | `/gryphonchat channels language round\|dash\|slash\|square` | Look of the language: T (EN), T-EN, T/EN or T [EN] |

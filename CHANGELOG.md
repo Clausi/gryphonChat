@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Chat alerts, so messages in guild, officer, party, raid, instance and whisper chat are not
+  missed. Per chat, and for keywords, you choose on the new options page "Chat alerts": the tab
+  of a chat window in the background glows and shows the number of new messages (also while the
+  tabs are faded out), a "New messages" line marks where they start, an arrow marks the messages,
+  the message appears in the upper middle of the screen, and a sound plays (7 to choose from, plus
+  the sounds other addons add through LibSharedMedia). A chat plays its sound only after it was
+  quiet for a while (60 seconds by default, also own messages count), so a conversation alerts
+  once; the keyword sound always plays.
+  By default guild, officer, party, raid and instance chat let the tab glow, count and get the
+  line. Keywords and the own name are shown in color in every chat; own keywords are set on the
+  options page or with `/gryphonchat keywords add|remove <word>`. Own messages never alert.
+
 ## [1.3.0] - 2026-11-08
 
 A list of the open whisper windows.
