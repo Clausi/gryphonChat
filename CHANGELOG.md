@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-23
+
+Chat alerts for the chats you do not want to miss, and for keywords.
+
 ### Added
 
 - Chat alerts, so messages in guild, officer, party, raid, instance and whisper chat are not
