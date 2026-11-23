@@ -1,6 +1,6 @@
 # GryphonChat
 
-**A better chat for WoW Forever.**
+**A better chat for WoW Forever and Retail.**
 
 GryphonChat extends the default chat instead of replacing it. Everything stays where you know it, with a few tools that make chatting easier.
 
@@ -55,8 +55,8 @@ All settings are on their own page in the game options (**Esc > Options > AddOns
 | `/gryphonchat notify on\|off` | Turn the automatic messages of this character on or off |
 
 ## Good to know
-- Made for **WoW Forever**. Version 1.4.0 is the last version for Retail, Classic Era, Classic
-  Anniversary and MoP Classic.
+- Made for **WoW Forever** and **Retail**. Version 1.4.0 is the last version for Classic Era,
+  Classic Anniversary and MoP Classic.
 - Languages: English, German, French.
 
 ## Feedback & source code

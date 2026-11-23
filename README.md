@@ -35,9 +35,11 @@ for WoWInterface (BBCode) in [docs/addon-description-wowinterface.txt](docs/addo
 | Client  | Interface | Status    |
 | ------- | --------- | --------- |
 | Forever | 16001     | Supported |
+| Retail  | 120105    | Supported |
 
-Other clients are not supported. Version 1.4.0 is the last version for Classic Era, Anniversary,
-MoP Classic and Retail.
+One package works on both clients, they use the same Mainline UI and API. Client differences are
+handled in `Core/Compat.lua`. Version 1.4.0 is the last version for Classic Era, Anniversary and MoP
+Classic.
 
 ## Installation
 

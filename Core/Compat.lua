@@ -1,7 +1,8 @@
 local _, ns = ...
 
--- Access to Blizzard's chat frame internals and chat APIs, in one place. Blizzard UI reference: the
--- forever branch of Gethe/wow-ui-source.
+-- Access to Blizzard's chat frame internals and chat APIs and the differences between the clients
+-- (Forever, Retail), in one place. Blizzard UI reference: the forever and live branches of
+-- Gethe/wow-ui-source.
 local Compat = {}
 ns.Compat = Compat
 
