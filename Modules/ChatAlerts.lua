@@ -18,7 +18,7 @@ local ChatAlerts = ns:RegisterModule("ChatAlerts")
 -- New messages are seen after a window showed them (Compat.HookChatMessages), so the counts follow
 -- Blizzard's rules which window shows what. Marker, keyword colors and the "New messages" line
 -- change the message before it is shown, in a message filter. Blizzard skips the filters for secret
--- event arguments (Mainline, e.g. in encounters): then there are no keywords, markers and line, but
+-- event arguments (e.g. in encounters): then there are no keywords, markers and line, but
 -- tab, sound and screen alerts still work. Secret text is only passed on to font strings.
 
 -- Chat types with own alert settings, in the order of the options: the chats, then the keywords.
