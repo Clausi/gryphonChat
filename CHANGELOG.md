@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Support for Classic Era, Anniversary, MoP Classic and Retail: GryphonChat is made for WoW Forever
+  only. Version 1.4.0 is the last version for the other clients and stays available for them.
+
 ## [1.4.0] - 2026-11-23
 
 Chat alerts for the chats you do not want to miss, and for keywords.

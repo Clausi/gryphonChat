@@ -32,16 +32,12 @@ for WoWInterface (BBCode) in [docs/addon-description-wowinterface.txt](docs/addo
 
 ## Supported clients
 
-| Client      | Interface | Status    |
-| ----------- | --------- | --------- |
-| Classic Era | 11509     | Supported |
-| Anniversary | 20506     | Supported |
-| MoP Classic | 50504     | Supported |
-| Retail      | 120105    | Supported |
-| Forever     | 16001     | Untested  |
+| Client  | Interface | Status    |
+| ------- | --------- | --------- |
+| Forever | 16001     | Supported |
 
-One package works on all supported clients. WoW Forever is listed in the TOC but not tested yet.
-Client differences are handled in `Core/Compat.lua`.
+Other clients are not supported. Version 1.4.0 is the last version for Classic Era, Anniversary,
+MoP Classic and Retail.
 
 ## Installation
 
@@ -92,7 +88,7 @@ GryphonChat/
 │   └── frFR.lua           # French translation
 ├── Core/
 │   ├── Init.lua           # Namespace, module registry, event dispatcher
-│   ├── Compat.lua         # Client differences (Forever, Classic Era, Anniversary, MoP Classic, Retail) detected from the APIs
+│   ├── Compat.lua         # Access to Blizzard APIs and chat frame internals, detected from the APIs
 │   ├── Util.lua           # Print/Notify/Debug helpers, debug memory output, defaults
 │   ├── CopyFrame.lua      # Read-only dialogs to copy a line or a whole text with Ctrl+C
 │   └── Main.lua           # Bootstrap: saved variables, module lifecycle, slash commands
@@ -160,7 +156,7 @@ Lint with [luacheck](https://github.com/lunarmodules/luacheck). Place `luacheck.
   what "Copy chat" can show (default 128 as in Blizzard's UI); without a number, shows the setting
 - `/gryphonchat channels` – show the joined channels with their short names
 - `/gryphonchat channels on|off` – short channel names for the current character, default off
-- `/gryphonchat channels language on|off` – language code after the short name on WoW Forever, e.g.
+- `/gryphonchat channels language on|off` – language code after the short name, e.g.
   `T (EN)`, default on
 - `/gryphonchat channels language round|dash|slash|square` – look of the language: `T (EN)` (default),
   `T-EN`, `T/EN` or `T [EN]`
