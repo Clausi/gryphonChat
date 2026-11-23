@@ -14,9 +14,8 @@ file only adds what is specific to GryphonChat.
   when hooking Blizzard code.
 - Classic Era, Anniversary, MoP Classic and Retail are no longer supported: 1.4.0 was the last
   version for them. Do not add code for them.
-- `Core/Compat.lua` still has branches for the Classic UI clients (e.g. the layout frame of the
-  button bar next to a chat window, `VARIABLES_LOADED` in `HookChatMouseWheel`). They are left in
-  for now; new code does not need a client check.
+- `Core/Compat.lua` has no client checks. It keeps Blizzard's chat frame internals and chat APIs in
+  one place: new code reaches them through `ns.Compat` as well.
 - `Core/Names.lua` does not exist yet. When a feature needs names, take over `Core/Names.lua` from
   GryphonMail.
 
