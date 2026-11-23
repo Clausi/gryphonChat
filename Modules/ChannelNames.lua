@@ -19,9 +19,9 @@ local DEFAULT_CHANNELS = {
     "WORLD_DEFENSE",
     "LOOKING_FOR_GROUP",
     "GUILD_RECRUITMENT",
-    -- Retail: "Trade (Services) - <city>", Forever: "Trade (Services) - English 31".
+    -- "Trade (Services) - English 31".
     "SERVICES",
-    -- Forever only: "Trade (Local) - <city>".
+    -- "Trade (Local) - <city>".
     "TRADE_LOCAL",
 }
 

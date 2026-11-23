@@ -88,7 +88,7 @@ GryphonChat/
 │   └── frFR.lua           # French translation
 ├── Core/
 │   ├── Init.lua           # Namespace, module registry, event dispatcher
-│   ├── Compat.lua         # Access to Blizzard APIs and chat frame internals, detected from the APIs
+│   ├── Compat.lua         # Access to Blizzard chat frame internals and chat APIs
 │   ├── Util.lua           # Print/Notify/Debug helpers, debug memory output, defaults
 │   ├── CopyFrame.lua      # Read-only dialogs to copy a line or a whole text with Ctrl+C
 │   └── Main.lua           # Bootstrap: saved variables, module lifecycle, slash commands

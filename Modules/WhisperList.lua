@@ -7,7 +7,7 @@ local WhisperList = ns:RegisterModule("WhisperList")
 -- overflow list shows neither. The button sits in the button bar of every chat window and is shown
 -- while a whisper window is open.
 --
--- Whisper names can be secret values on Mainline, so they are only passed on to font strings: they
+-- Whisper names can be secret values, so they are only passed on to font strings: they
 -- are not compared, sorted or tested. Windows are told apart by their frame, and new messages are
 -- seen through Blizzard's tab alert instead of the whisper events and their sender.
 --
@@ -22,9 +22,8 @@ local WhisperList = ns:RegisterModule("WhisperList")
 -- A closed whisper window keeps no text. "New Tab" shows the messages nowhere else, so they are gone
 -- like when Blizzard's own tab menu closes the window.
 
--- Classic: above the copy button (layout index -10). Mainline: stacked on top of it, see
--- Compat.CreateChatFrameButton.
-local BUTTON_LAYOUT_INDEX = -11
+-- Stacked on top of the copy button and created after it, as it is only shown at times (see
+-- Compat.CreateChatFrameButton).
 local BUTTON_ICON = "Interface\\ChatFrame\\UI-ChatWhisperIcon"
 local BUTTON_HIGHLIGHT = "Interface\\Buttons\\UI-Common-MouseHilight"
 
@@ -136,7 +135,7 @@ local function Refresh()
     local shown = IsEnabled() and #windows > 0
 
     for _, button in pairs(buttons) do
-        ns.Compat.SetChatFrameButtonShown(button, shown)
+        button:SetShown(shown)
         button.unread:SetText(total > 0 and total or "")
     end
 
@@ -252,7 +251,7 @@ local function AddButton(chatFrame)
         return
     end
 
-    local button = ns.Compat.CreateChatFrameButton(chatFrame, BUTTON_LAYOUT_INDEX)
+    local button = ns.Compat.CreateChatFrameButton(chatFrame)
     local icon = button:CreateTexture(nil, "ARTWORK")
     icon:SetTexture(BUTTON_ICON)
     icon:SetSize(18, 18)

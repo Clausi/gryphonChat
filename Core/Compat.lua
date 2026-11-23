@@ -1,16 +1,14 @@
 local _, ns = ...
 
--- Differences between the supported clients (Forever, Classic Era, Anniversary, MoP Classic,
--- Retail), in one place. Detects the APIs and methods a client has instead of comparing version
--- numbers. Blizzard UI reference: the forever, classic_era, classic_anniversary, classic (MoP
--- Classic) and live branches of Gethe/wow-ui-source.
+-- Access to Blizzard's chat frame internals and chat APIs, in one place. Blizzard UI reference: the
+-- forever branch of Gethe/wow-ui-source.
 local Compat = {}
 ns.Compat = Compat
 
 -- Registers a filter for a chat message event: filter(chatFrame, event, message, ...) returns
 -- true to hide the message, or false followed by the changed event arguments. All supported clients
--- have ChatFrameUtil.AddMessageEventFilter; the global ChatFrame_AddMessageEventFilter only exists as
--- a deprecation fallback there. Blizzard skips the filter when an event argument is a secret value
+-- ChatFrameUtil.AddMessageEventFilter is used; the global ChatFrame_AddMessageEventFilter only exists
+-- as a deprecation fallback. Blizzard skips the filter when an event argument is a secret value
 -- (ChatFrameFilters.lua, canaccessvalue).
 function Compat.AddMessageEventFilter(event, filter)
     ChatFrameUtil.AddMessageEventFilter(event, filter)
@@ -52,7 +50,7 @@ function Compat.IsWhisperWindow(chatFrame)
         and (chatFrame.chatType == "WHISPER" or chatFrame.chatType == "BN_WHISPER") or false
 end
 
--- Name of a whisper window. Can be a secret value on Mainline (FCF_HasSecretName in
+-- Name of a whisper window. Can be a secret value (FCF_HasSecretName in
 -- FloatingChatFrame.lua), so it is returned as it is, without a test: pass it to a font string only.
 function Compat.GetWhisperWindowName(chatFrame)
     return chatFrame.name
@@ -101,24 +99,17 @@ function Compat.GetChatFrameName(chatFrame)
 end
 
 -- Creates an own button in the button bar next to a chat window (chatFrame.buttonFrame in
--- FloatingChatFrame.xml).
--- Classic: the bar is a VerticalLayoutFrame that stacks its children by layoutIndex from top to
--- bottom: ChatFrame1 uses -2 to 3, the other windows 1 to 3. Duplicate indices raise an error.
--- Mainline: the bar has no layout. Blizzard anchors the channel button (ChatFrame1) and the minimize
--- button (undocked windows) to the top and ChatFrameMenuButton to the bottom of ChatFrame1's bar.
--- The own buttons go to the bottom, above the menu button, one above the other. There is room for
--- one on a short window: create buttons that are only shown at times (SetChatFrameButtonShown) last.
+-- FloatingChatFrame.xml). The bar has no layout: Blizzard anchors the channel button (ChatFrame1)
+-- and the minimize button (undocked windows) to the top and ChatFrameMenuButton to the bottom of
+-- ChatFrame1's bar. The own buttons go to the bottom, above the menu button, one above the other.
+-- There is room for one on a short window: create buttons that are only shown at times last.
 local lastChatFrameButtons = {}
 
-function Compat.CreateChatFrameButton(chatFrame, layoutIndex)
+function Compat.CreateChatFrameButton(chatFrame)
     local buttonFrame = chatFrame.buttonFrame
     local button = CreateFrame("Button", nil, buttonFrame)
     button:SetSize(32, 32)
-    if buttonFrame.MarkDirty then
-        button.layoutIndex = layoutIndex
-        button.align = "center"
-        buttonFrame:MarkDirty()
-    elseif lastChatFrameButtons[buttonFrame] then
+    if lastChatFrameButtons[buttonFrame] then
         button:SetPoint("BOTTOM", lastChatFrameButtons[buttonFrame], "TOP")
     elseif ChatFrameMenuButton and ChatFrameMenuButton:GetParent() == buttonFrame then
         button:SetPoint("BOTTOM", ChatFrameMenuButton, "TOP")
@@ -127,19 +118,6 @@ function Compat.CreateChatFrameButton(chatFrame, layoutIndex)
     end
     lastChatFrameButtons[buttonFrame] = button
     return button
-end
-
--- Shows or hides a button from CreateChatFrameButton. The layout of the Classic bar skips hidden
--- children, but has to be told about the change.
-function Compat.SetChatFrameButtonShown(button, shown)
-    if button:IsShown() == shown then
-        return
-    end
-    button:SetShown(shown)
-    local buttonFrame = button:GetParent()
-    if buttonFrame.MarkDirty then
-        buttonFrame:MarkDirty()
-    end
 end
 
 -- Channels the character has joined, in channel number order: { { number = 1, name = "General" },
@@ -154,9 +132,8 @@ function Compat.GetJoinedChannels()
 end
 
 -- Name of a joined channel without zone, as GetChannelList returns it: "General" for "General -
--- Elwynn Forest", or nil. ChatFrameUtil.GetChannelShortcutName splits the full name at "-" on the
--- Classic clients and asks C_ChatInfo.GetChannelShortcut on Mainline, which also covers names like
--- "Trade (Services) - Stormwind City" -> "Services".
+-- Elwynn Forest", or nil. ChatFrameUtil.GetChannelShortcutName asks C_ChatInfo.GetChannelShortcut,
+-- which also covers names like "Trade (Services) - Stormwind City" -> "Services".
 function Compat.GetChannelBaseName(channelNumber)
     if type(channelNumber) ~= "number" or not select(2, GetChannelName(channelNumber)) then
         return nil
@@ -248,10 +225,8 @@ end
 
 -- Calls callback(chatFrame, delta, scrolled) after a chat window scrolled by mouse wheel; scrolled
 -- is the signed amount of lines Blizzard's handler scrolled it (positive is up, to older lines).
--- Classic: OnMouseWheel is FloatingChatFrame_OnMouseScroll, set on VARIABLES_LOADED (ChatFrame
--- OnEvent) and for new whisper windows, and calls ScrollUp/ScrollDown, i.e. ScrollByAmount(+-1).
--- Mainline: ScrollUtil.InitScrollingMessageFrameWithScrollBar sets it in OnLoad and calls
--- ScrollByAmount(+-3). Both only when the CVar chatMouseScroll is on. The script is hooked, not
+-- ScrollUtil.InitScrollingMessageFrameWithScrollBar sets OnMouseWheel in OnLoad, which calls
+-- ScrollByAmount(+-3) when the CVar chatMouseScroll is on. The script is hooked, not
 -- replaced; a hook on ScrollByAmount records the amount (all scrolling ends there, see
 -- ScrollingMessageFrame.lua). AddMessage also scrolls through it, so it is not the hook for the wheel.
 local wheelHooks = {}
@@ -280,13 +255,6 @@ function Compat.HookChatMouseWheel(callback)
     end
 
     Compat.HookChatFrames(HookFrame)
-    -- Classic sets the script on VARIABLES_LOADED, which may come after PLAYER_LOGIN. The chat
-    -- frames handle the event after this handler, so the check waits a frame.
-    ns:RegisterEvent("VARIABLES_LOADED", function()
-        C_Timer.After(0, function()
-            Compat.ForEachChatFrame(HookFrame)
-        end)
-    end)
 end
 
 -- Calls callback(chatFrame, event, eventArgs, message, r, g, b) after a chat window showed the
@@ -294,8 +262,8 @@ end
 -- AddMessage(msg, r, g, b, chatTypeID, accessID, typeID, event, eventArgs, MessageFormatter), after
 -- the message filters and the checks which window shows what (channels, whisper targets). eventArgs
 -- holds the original event arguments (SafePack). Other lines (system messages, addon output) come
--- without an event and are left out. The message and the event arguments can be secret values on
--- Mainline; Blizzard passes them on even when it skips the message filters.
+-- without an event and are left out. The message and the event arguments can be secret values in
+-- encounters; Blizzard passes them on even when it skips the message filters.
 local messageHooks = {}
 
 function Compat.HookChatMessages(callback)
@@ -314,7 +282,7 @@ end
 
 -- Message text, sender GUID, line ID and sender name of a chat event (arguments 1, 12, 11 and 2),
 -- from the event arguments of HookChatMessages. For an own whisper (..._INFORM) the GUID and name
--- are the ones of the receiver. Any of them can be a secret value on Mainline.
+-- are the ones of the receiver. Any of them can be a secret value.
 function Compat.GetChatEventInfo(eventArgs)
     return eventArgs[1], eventArgs[12], eventArgs[11], eventArgs[2]
 end
