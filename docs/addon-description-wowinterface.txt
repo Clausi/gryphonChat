@@ -1,6 +1,6 @@
 [size="5"][b]GryphonChat[/b][/size]
 
-[b]A better chat for World of Warcraft: Retail, WoW Forever, Classic Era, Anniversary and MoP Classic.[/b]
+[b]A better chat for WoW Forever.[/b]
 
 GryphonChat extends the default chat instead of replacing it. Everything stays where you know it, with a few tools that make chatting easier.
 
@@ -46,7 +46,7 @@ All settings are on their own page in the game options ([b]Esc > Options > AddOn
 [*][b]/gryphonchat keywords[/b] - Show the keywords of the chat alerts
 [*][b]/gryphonchat keywords add|remove <word>[/b] - Add or remove a keyword
 [*][b]/gryphonchat channels on|off[/b] - Short channel names for this character
-[*][b]/gryphonchat channels language on|off[/b] - Language after the short name on WoW Forever
+[*][b]/gryphonchat channels language on|off[/b] - Language after the short name, e.g. T (EN)
 [*][b]/gryphonchat channels language round|dash|slash|square[/b] - Look of the language: T (EN), T-EN, T/EN or T [EN]
 [*][b]/gryphonchat channels set <channel> <short name>[/b] - Your own short name for a channel
 [*][b]/gryphonchat channels reset <channel>[/b] - Remove your own short name
@@ -55,7 +55,7 @@ All settings are on their own page in the game options ([b]Esc > Options > AddOn
 
 [size="4"][b]Good to know[/b][/size]
 [list]
-[*]Made for [b]Retail[/b], [b]WoW Forever[/b], [b]Classic Era[/b], [b]Classic Anniversary[/b] and [b]MoP Classic[/b].
+[*]Made for [b]WoW Forever[/b]. Version 1.4.0 is the last version for Retail, Classic Era, Classic Anniversary and MoP Classic.
 [*]Languages: English, German, French.
 [/list]
 
