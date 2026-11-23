@@ -18,10 +18,14 @@ A World of Warcraft addon that extends the default chat.
 - **Whisper list:** while whisper windows are open, a button next to the chat lists them, newest first
   and with their unread messages. A click opens one, and they can be closed one by one, all read
   ones or all at once.
+- **Chat alerts:** per chat type (guild, officer, party, raid, instance, whispers) and for keywords:
+  tab glow and unread count on a chat window in the background, a "New messages" line, a marker, the
+  message in the middle of the screen and a sound (also from LibSharedMedia). Keywords and the own
+  name are highlighted.
 - **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
   channels have default short names, every channel can get an own one.
-- **Options:** all settings on an own page in the game options, the short channel names also in the
-  chat settings of every chat window.
+- **Options:** all settings on an own page in the game options (the chat alerts on a subpage), the
+  short channel names also in the chat settings of every chat window.
 
 The full description for CurseForge and Wago is in [docs/addon-description.md](docs/addon-description.md),
 for WoWInterface (BBCode) in [docs/addon-description-wowinterface.txt](docs/addon-description-wowinterface.txt).
@@ -75,9 +79,10 @@ GryphonChat/
 ├── .github/workflows/
 │   ├── luacheck.yml       # luacheck on pushes to main and on pull requests
 │   └── release.yml        # Builds and uploads a release on version tags (BigWigs packager)
-├── .pkgmeta               # Packager config: changelog and files left out of the package
+├── .pkgmeta               # Packager config: libraries, changelog and files left out of the package
 ├── GryphonChat.toc        # Addon manifest, defines load order
 ├── LICENSE                # MIT license
+├── Libs/                  # Embedded libraries, not in the repo (fetched by the packager)
 ├── docs/
 │   ├── addon-description.md  # Description text for CurseForge / Wago, Markdown (not shipped)
 │   └── addon-description-wowinterface.txt  # Same text for WoWInterface, BBCode (not shipped)
@@ -99,11 +104,24 @@ GryphonChat/
     ├── LinkTooltips.lua   # Tooltips of item, spell, ... links in chat on mouseover
     ├── ChatScroll.lua     # Mouse wheel with Shift/Ctrl, scrolling back down after a while
     ├── WhisperList.lua    # List of the open whisper windows, opens and closes them through secure buttons
+    ├── ChatAlerts.lua     # Alerts per chat type and for keywords: tab glow and count, line, sound, screen ("/gryphonchat keywords")
+    ├── ChatAlertsEditor.lua  # Table of the chat types and their alerts with the keyword settings, used by Options
     ├── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
     ├── ChannelNamesEditor.lua  # Editor for the short channel names, used by Options and ChatConfig
     ├── Options.lua        # Options page in the game settings ("/gryphonchat options")
     └── ChatConfig.lua     # GryphonChat category in the chat settings of every chat window
 ```
+
+## Libraries
+
+The packager embeds these libraries from the externals in `.pkgmeta`; locally,
+`.tools/fetch-libs.cmd` puts them into `Libs/`:
+
+- [LibStub](https://www.wowace.com/projects/libstub) (public domain)
+- [CallbackHandler-1.0](https://www.wowace.com/projects/callbackhandler), needed by LibSharedMedia
+- [LibSharedMedia-3.0](https://www.wowace.com/projects/libsharedmedia-3-0): the sounds other addons
+  register are offered for the chat alerts. It stays under its own license, not under the MIT
+  license of GryphonChat.
 
 ## Adding a module
 

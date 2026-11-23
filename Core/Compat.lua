@@ -288,3 +288,93 @@ function Compat.HookChatMouseWheel(callback)
         end)
     end)
 end
+
+-- Calls callback(chatFrame, event, eventArgs, message, r, g, b) after a chat window showed the
+-- message of a chat event. ChatFrameMixin:MessageEventHandler (ChatFrameOverrides.lua) adds it with
+-- AddMessage(msg, r, g, b, chatTypeID, accessID, typeID, event, eventArgs, MessageFormatter), after
+-- the message filters and the checks which window shows what (channels, whisper targets). eventArgs
+-- holds the original event arguments (SafePack). Other lines (system messages, addon output) come
+-- without an event and are left out. The message and the event arguments can be secret values on
+-- Mainline; Blizzard passes them on even when it skips the message filters.
+local messageHooks = {}
+
+function Compat.HookChatMessages(callback)
+    Compat.HookChatFrames(function(chatFrame)
+        if messageHooks[chatFrame] then
+            return
+        end
+        messageHooks[chatFrame] = true
+        hooksecurefunc(chatFrame, "AddMessage", function(self, message, r, g, b, _, _, _, event, eventArgs)
+            if type(event) == "string" and type(eventArgs) == "table" then
+                callback(self, event, eventArgs, message, r, g, b)
+            end
+        end)
+    end)
+end
+
+-- Message text, sender GUID, line ID and sender name of a chat event (arguments 1, 12, 11 and 2),
+-- from the event arguments of HookChatMessages. For an own whisper (..._INFORM) the GUID and name
+-- are the ones of the receiver. Any of them can be a secret value on Mainline.
+function Compat.GetChatEventInfo(eventArgs)
+    return eventArgs[1], eventArgs[12], eventArgs[11], eventArgs[2]
+end
+
+-- Tab of a chat window ("ChatFrame1Tab", created with the window in FloatingChatFrame.xml).
+function Compat.GetChatTab(chatFrame)
+    return _G[chatFrame:GetName() .. "Tab"]
+end
+
+-- Overflow button of the main chat dock (FCFDock_UpdateTabs shows it when not all tabs fit), or nil.
+function Compat.GetChatDockOverflowButton()
+    return GENERAL_CHAT_DOCK and GENERAL_CHAT_DOCK.overflowButton
+end
+
+-- Plays a sound of the SOUNDKIT table by its key, on the master channel so it is heard with game
+-- sounds off. Returns false if the client does not know the key.
+function Compat.PlaySoundKit(key)
+    local soundKit = SOUNDKIT and SOUNDKIT[key]
+    if not soundKit then
+        return false
+    end
+    PlaySound(soundKit, "Master")
+    return true
+end
+
+-- Plays a sound file (path or file ID, e.g. from LibSharedMedia) on the master channel.
+function Compat.PlaySoundFile(file)
+    PlaySoundFile(file, "Master")
+end
+
+-- Ways other players write the character's name in chat: the name as UnitName returns it, and on
+-- Forever ("First Surname", see Constants.CharacterNameSeparatorConsts) also the first name alone.
+function Compat.GetOwnMentionNames()
+    local name = UnitName("player")
+    local names = { name }
+    local separators = Constants and Constants.CharacterNameSeparatorConsts
+    local separator = separators and separators.CHARACTERNAME_SURNAME_SEPARATOR
+    if type(separator) == "string" and separator ~= "" then
+        local position = name:find(separator, 1, true)
+        if position and position > 1 then
+            names[#names + 1] = name:sub(1, position - 1)
+        end
+    end
+    return names
+end
+
+-- True if the tab of a docked chat window is out of sight in the dock's overflow: the dock scrolls
+-- its tabs (FCFDock_UpdateTabs) and shows the overflow button when they do not all fit. Static
+-- docked windows (ChatFrame1, the combat log) always stay in sight.
+function Compat.IsChatTabInOverflow(chatFrame)
+    local dock = GENERAL_CHAT_DOCK
+    if not (dock and dock.overflowButton and dock.scrollFrame and dock.overflowButton:IsShown())
+        or not chatFrame.isDocked or chatFrame.isStaticDocked then
+        return false
+    end
+    local tab = Compat.GetChatTab(chatFrame)
+    local left, right = tab and tab:GetLeft(), tab and tab:GetRight()
+    local scrollLeft, scrollRight = dock.scrollFrame:GetLeft(), dock.scrollFrame:GetRight()
+    if not (left and right and scrollLeft and scrollRight) then
+        return false
+    end
+    return left < scrollLeft - 1 or right > scrollRight + 1
+end

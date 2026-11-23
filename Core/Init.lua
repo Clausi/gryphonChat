@@ -47,6 +47,81 @@ ns.charDefaults = {
         -- Seconds after the last wheel scroll until the chat scrolls back down, 0 for never.
         bottomDelay = 0,
     },
+    -- Alerts for messages in the chosen chats and for keywords. Change in the options, the keywords
+    -- also with "/gryphonchat keywords".
+    chatAlerts = {
+        -- Alerts per chat type (ChatAlerts.TYPES): glow and unread count on the tab of a window in
+        -- the background, "New messages" line where its unread messages start (not for whispers and
+        -- keywords), marker in front of the message, the message in the middle of the screen, and a
+        -- sound (a key of ChatAlerts.SOUNDS, "" for none).
+        types = {
+            guild = {
+                tabFlash = true,
+                tabCount = true,
+                newMessagesLine = true,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+            officer = {
+                tabFlash = true,
+                tabCount = true,
+                newMessagesLine = true,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+            party = {
+                tabFlash = true,
+                tabCount = true,
+                newMessagesLine = true,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+            raid = {
+                tabFlash = true,
+                tabCount = true,
+                newMessagesLine = true,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+            instance = {
+                tabFlash = true,
+                tabCount = true,
+                newMessagesLine = true,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+            whisper = {
+                tabFlash = false,
+                tabCount = false,
+                newMessagesLine = false,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+            keyword = {
+                tabFlash = true,
+                tabCount = true,
+                newMessagesLine = false,
+                markLines = false,
+                centerText = false,
+                sound = "",
+            },
+        },
+        -- Seconds a chat must have been quiet (no message, also no own one) for its sound to play
+        -- again (ChatAlerts.SOUND_PAUSES), 0 for every message. Not for the keyword sound.
+        soundPause = 60,
+        -- Keywords in color and as alerts, in every chat.
+        keywords = true,
+        -- The own name counts as a keyword.
+        ownName = true,
+        -- Own keywords, as entered.
+        keywordList = {},
+    },
 }
 
 -- Registers a module. A module may implement:
