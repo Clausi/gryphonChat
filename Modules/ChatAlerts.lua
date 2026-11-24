@@ -123,8 +123,11 @@ for _, event in ipairs(KEYWORD_EVENTS) do
 end
 
 -- Chat frame -> { unread = counted messages while in the background, flash = the tab glows,
--- linePending = the next message gets the "New messages" line, overlay = glow and count on the tab }.
+-- lastMessage = GetTime() of the last counted or glowing message, linePending = the next message gets
+-- the "New messages" line, overlay = glow and count on the tab }.
 local states = {}
+-- Functions called with the chat frame after its unread messages or glow changed (see the whisper list).
+local unreadCallbacks = {}
 local overflowOverlay
 local playerGUID
 -- Lowercase keywords including the own name, nil while keywords are off.
@@ -386,6 +389,9 @@ local function UpdateTab(chatFrame)
         ShowOverlay(state.overlay, state.unread, state.flash)
     end
     UpdateOverflow()
+    for _, callback in ipairs(unreadCallbacks) do
+        callback(chatFrame)
+    end
 end
 
 local function OnChatFrameShown(chatFrame)
@@ -409,6 +415,7 @@ local function OnChatFrame(chatFrame)
     states[chatFrame] = {
         unread = 0,
         flash = false,
+        lastMessage = 0,
         linePending = not chatFrame:IsShown(),
         overlay = tab and CreateOverlay(tab, true),
     }
@@ -617,6 +624,7 @@ local function OnChatMessage(chatFrame, event, eventArgs, message, r, g, b)
             state.unread = state.unread + 1
         end
         state.flash = state.flash or flash
+        state.lastMessage = GetTime()
         UpdateTab(chatFrame)
     end
 
@@ -631,6 +639,23 @@ local function OnChatMessage(chatFrame, event, eventArgs, message, r, g, b)
             ShowCenterText(message, r, g, b)
         end
     end
+end
+
+-- Unread messages for other modules -----------------------------------------------------------
+
+-- The counted messages of a chat window in the background, whether its tab glows and the GetTime() of
+-- the last of them. Only chat types and keywords with "tabCount" or "tabFlash" count.
+function ChatAlerts.GetUnread(chatFrame)
+    local state = states[chatFrame]
+    if not state then
+        return 0, false, 0
+    end
+    return state.unread, state.flash, state.lastMessage
+end
+
+-- Calls callback(chatFrame) whenever GetUnread of a chat window changed.
+function ChatAlerts.RegisterUnreadCallback(callback)
+    unreadCallbacks[#unreadCallbacks + 1] = callback
 end
 
 -- Settings -------------------------------------------------------------------------------------
