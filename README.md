@@ -17,7 +17,7 @@ A World of Warcraft addon that extends the default chat.
   to the newest line some time after scrolling.
 - **Whisper list:** while whisper windows are open, a button next to the chat lists them, newest first
   and with their unread messages. A click opens one, and they can be closed one by one, all read
-  ones or all at once.
+  ones or all at once. Chat windows with unread messages from the chat alerts are listed as well.
 - **Chat alerts:** per chat type (guild, officer, party, raid, instance, whispers) and for keywords:
   tab glow and unread count on a chat window in the background, a "New messages" line, a marker, the
   message in the middle of the screen and a sound (also from LibSharedMedia). Keywords and the own

@@ -4,8 +4,10 @@ local WhisperList = ns:RegisterModule("WhisperList")
 
 -- Overview of the open whisper windows, for when Blizzard's dock is full ("New Tab" and "Both" of the
 -- whisper mode): newest first, with the unread messages per window, to open and close them. Blizzard's
--- overflow list shows neither. The button sits in the button bar of every chat window and is shown
--- while a whisper window is open.
+-- overflow list shows neither. The other chat windows are listed too while they have unread messages
+-- by the chat alerts (ChatAlerts.GetUnread), to open them; they cannot be closed from the list. The
+-- button sits in the button bar of every chat window and is shown while a whisper window is open or
+-- another window has unread messages.
 --
 -- Whisper names can be secret values, so they are only passed on to font strings: they
 -- are not compared, sorted or tested. Windows are told apart by their frame, and new messages are
@@ -50,7 +52,7 @@ local READ_COLOR = { 1, 1, 1 }
 
 -- Whisper window -> { unread = messages not seen yet, lastActivity = GetTime() of the last change }.
 local states = {}
--- Chat frame -> its list button.
+-- Chat frame -> its list button. Every chat window has one.
 local buttons = {}
 -- Whisper windows with the OnShow hook.
 local hooked = {}
@@ -64,22 +66,54 @@ local function IsEnabled()
     return ns.charDb.whisperList
 end
 
--- The open whisper windows, newest first. Frame IDs keep the order stable for equal times.
+-- The open whisper windows.
 local function GetWindows()
     local windows = {}
     for chatFrame in pairs(states) do
         windows[#windows + 1] = chatFrame
     end
-    table.sort(windows, function(a, b)
-        local timeA, timeB = states[a].lastActivity, states[b].lastActivity
-        if timeA ~= timeB then
-            return timeA > timeB
-        end
-        return a:GetID() > b:GetID()
-    end)
     return windows
 end
 
+-- The other chat windows with unread messages or a glowing tab from the chat alerts, as entries
+-- { chatFrame, unread, lastActivity }. A closed window keeps getting messages, but its tab is hidden.
+local function GetChatEntries()
+    local entries = {}
+    local chatAlerts = ns.modules.ChatAlerts
+    for chatFrame in pairs(buttons) do
+        if not ns.Compat.IsWhisperWindow(chatFrame) then
+            local unread, flash, lastMessage = chatAlerts.GetUnread(chatFrame)
+            local tab = ns.Compat.GetChatTab(chatFrame)
+            if (unread > 0 or flash) and tab and tab:IsShown() then
+                entries[#entries + 1] = { chatFrame = chatFrame, unread = unread, lastActivity = lastMessage }
+            end
+        end
+    end
+    return entries
+end
+
+-- Whisper windows and the chat windows of GetChatEntries, newest first, as entries
+-- { chatFrame, unread, lastActivity, isWhisper }. Frame IDs keep the order stable for equal times.
+local function GetEntries()
+    local entries = GetChatEntries()
+    for chatFrame, state in pairs(states) do
+        entries[#entries + 1] = {
+            chatFrame = chatFrame,
+            unread = state.unread,
+            lastActivity = state.lastActivity,
+            isWhisper = true,
+        }
+    end
+    table.sort(entries, function(a, b)
+        if a.lastActivity ~= b.lastActivity then
+            return a.lastActivity > b.lastActivity
+        end
+        return a.chatFrame:GetID() > b.chatFrame:GetID()
+    end)
+    return entries
+end
+
+-- Unread messages of the whisper windows.
 local function GetTotalUnread()
     local total = 0
     for _, state in pairs(states) do
@@ -100,20 +134,26 @@ local function GetReadWindows()
 end
 
 -- Only out of combat: it changes secure buttons. The list closes when combat starts.
-local function UpdateList(windows)
-    list.title:SetFormattedText(L["WHISPER_LIST_TITLE"], #windows)
+local function UpdateList(entries)
+    list.title:SetFormattedText(L["WHISPER_LIST_TITLE"], #entries)
 
-    local shownRows = min(#windows, MAX_ROWS)
+    local shownRows = min(#entries, MAX_ROWS)
     for i = 1, shownRows do
         local row = rows[i] or CreateRow(i)
-        local chatFrame = windows[i]
-        local unread = states[chatFrame].unread
-        local color = unread > 0 and UNREAD_COLOR or READ_COLOR
+        local entry = entries[i]
+        local chatFrame = entry.chatFrame
+        -- Chat windows in the list always have news: their tab glows at least.
+        local color = (entry.unread > 0 or not entry.isWhisper) and UNREAD_COLOR or READ_COLOR
         ns.Compat.SetChatTabClicks(row, { chatFrame }, "LeftButton")
-        ns.Compat.SetChatTabClicks(row.closeButton, { chatFrame }, "MiddleButton")
-        row.name:SetText(ns.Compat.GetWhisperWindowName(chatFrame))
+        if entry.isWhisper then
+            ns.Compat.SetChatTabClicks(row.closeButton, { chatFrame }, "MiddleButton")
+            row.name:SetText(ns.Compat.GetWhisperWindowName(chatFrame))
+        else
+            row.name:SetText(ns.Compat.GetChatFrameName(chatFrame))
+        end
+        row.closeButton:SetShown(entry.isWhisper == true)
         row.name:SetTextColor(color[1], color[2], color[3])
-        row.unread:SetText(unread > 0 and unread or "")
+        row.unread:SetText(entry.unread > 0 and entry.unread or "")
         row:Show()
     end
     for i = shownRows + 1, #rows do
@@ -123,16 +163,19 @@ local function UpdateList(windows)
     local readWindows = GetReadWindows()
     ns.Compat.SetChatTabClicks(closeReadButton, readWindows, "MiddleButton")
     closeReadButton:SetEnabled(#readWindows > 0)
-    ns.Compat.SetChatTabClicks(closeAllButton, windows, "MiddleButton")
+    ns.Compat.SetChatTabClicks(closeAllButton, GetWindows(), "MiddleButton")
 
     list:SetHeight(LIST_HEADER_HEIGHT + shownRows * ROW_HEIGHT + LIST_FOOTER_HEIGHT)
 end
 
 -- Brings the buttons and an open list up to date.
 local function Refresh()
-    local windows = GetWindows()
-    local total = GetTotalUnread()
-    local shown = IsEnabled() and #windows > 0
+    local entries = GetEntries()
+    local total = 0
+    for _, entry in ipairs(entries) do
+        total = total + entry.unread
+    end
+    local shown = IsEnabled() and #entries > 0
 
     for _, button in pairs(buttons) do
         button:SetShown(shown)
@@ -141,7 +184,7 @@ local function Refresh()
 
     if list and list:IsShown() then
         if shown then
-            UpdateList(windows)
+            UpdateList(entries)
         else
             list:Hide()
         end
@@ -237,7 +280,7 @@ local function ToggleList(button)
         list:Hide()
         return
     end
-    UpdateList(GetWindows())
+    UpdateList(GetEntries())
     -- The rows are protected, so the game refuses to anchor the list to the button ("Cannot anchor
     -- protected frames to regions"). The list goes to the button's position on UIParent instead.
     local scale = button:GetEffectiveScale() / UIParent:GetEffectiveScale()
@@ -336,6 +379,8 @@ function WhisperList:OnEnable()
     ns.Compat.HookChatFrames(OnChatFrame)
     ns.Compat.HookChatAlerts(OnNewMessage, OnAlertStopped)
     ns.Compat.HookChatWindowClosed(OnWindowClosed)
+    -- Unread messages of the other chat windows, and their windows shown again.
+    ns.modules.ChatAlerts.RegisterUnreadCallback(Refresh)
     -- Fires before the combat lockdown starts, so the secure buttons can still be hidden.
     ns:RegisterEvent("PLAYER_REGEN_DISABLED", function()
         if list then
