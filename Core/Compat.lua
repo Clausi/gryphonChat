@@ -81,9 +81,32 @@ end
 
 -- Calls onStart(chatFrame) when the tab of a chat window starts alerting and onStop(chatFrame) when
 -- it stops. FCF_StartAlertFlash runs for every message while the window is not on screen.
+--
+-- The frame can be a secret value: FCFManager_StopFlashOnDedicatedWindows looks the whisper windows
+-- up by a token built from the whisper target, and a secret target makes the frames it finds secret.
+-- A secret frame cannot be used as a table key, so the callbacks get nil then: the window is unknown
+-- (see IsChatTabAlerting).
+local function PassChatFrame(callback)
+    return function(chatFrame)
+        if issecretvalue and issecretvalue(chatFrame) then
+            chatFrame = nil
+        end
+        callback(chatFrame)
+    end
+end
+
 function Compat.HookChatAlerts(onStart, onStop)
-    hooksecurefunc("FCF_StartAlertFlash", onStart)
-    hooksecurefunc("FCF_StopAlertFlash", onStop)
+    hooksecurefunc("FCF_StartAlertFlash", PassChatFrame(onStart))
+    hooksecurefunc("FCF_StopAlertFlash", PassChatFrame(onStop))
+end
+
+-- Whether the tab of a chat window is alerting (FCF_StartAlertFlash, until FCF_StopAlertFlash), or
+-- nil if the client does not tell.
+function Compat.IsChatTabAlerting(chatFrame)
+    if not (ChatFrameUtil and ChatFrameUtil.IsTabAlerting) then
+        return nil
+    end
+    return ChatFrameUtil.IsTabAlerting(Compat.GetChatTab(chatFrame)) and true or false
 end
 
 -- Calls callback() after a chat window was closed. FCF_Close(frame, fallback) can also close the

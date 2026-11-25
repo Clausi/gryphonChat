@@ -351,11 +351,26 @@ local function OnNewMessage(chatFrame)
     end
 end
 
--- Blizzard stops the alert when the player answers from another window ("Both" whisper mode).
+-- Blizzard stops the alert when the player answers from another window ("Both" whisper mode). For a
+-- secret whisper target the window is unknown (nil, see Compat.HookChatAlerts): then every window whose
+-- tab no longer alerts has been read.
 local function OnAlertStopped(chatFrame)
-    local state = states[chatFrame]
-    if state and state.unread > 0 then
-        state.unread = 0
+    local changed = false
+    if chatFrame then
+        local state = states[chatFrame]
+        if state and state.unread > 0 then
+            state.unread = 0
+            changed = true
+        end
+    else
+        for frame, state in pairs(states) do
+            if state.unread > 0 and ns.Compat.IsChatTabAlerting(frame) == false then
+                state.unread = 0
+                changed = true
+            end
+        end
+    end
+    if changed then
         Refresh()
     end
 end
