@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through the chat alerts. The button next to the chat now also appears when only such a window has
   unread messages.
 
+### Fixed
+
+- Answering a whisper from another chat window ("Both" whisper mode) no longer causes a Lua error
+  in the whisper list when the whisper partner's name is hidden by the game (e.g. in encounters).
+
 ## [2.0.0] - 2026-11-23
 
 GryphonChat is now made for WoW Forever and Retail only. The Classic clients stay on version 1.4.0.
