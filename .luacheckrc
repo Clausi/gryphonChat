@@ -51,6 +51,7 @@ read_globals = {
     "EventRegistry",
     "FCF_OpenTemporaryWindow",
     "GameTooltip_Hide",
+    "HIGHLIGHT_FONT_COLOR",
     "Settings",
     "MinimalSliderWithSteppersMixin",
     "ChatConfigCategory_OnClick",
