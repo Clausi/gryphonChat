@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- After the GryphonChat options page was shown, changing a Blizzard setting such as an action bar
+  could taint Edit Mode, which then failed with errors (e.g. blocked target or focus actions, errors
+  in the party frames). The options page now uses its own controls instead of Blizzard's settings
+  list. Because of that, the settings search no longer finds the GryphonChat settings.
+
 ## [2.1.0] - 2026-11-25
 
 ### Added

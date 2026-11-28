@@ -3,140 +3,115 @@ local L = ns.L
 local Options = ns:RegisterModule("Options")
 
 -- Options page in Blizzard's settings (Esc > Options > AddOns > GryphonChat): the general settings
--- as a vertical list, the chat alerts (with the alerts editor) and the short channel names (with the
--- channel names editor) as subcategories. The settings are per character and stay in ns.charDb;
--- proxy settings read and write them there.
+-- built with own controls (Core/OptionsPanel.lua explains why), the chat alerts (with the alerts
+-- editor) and the short channel names (with the channel names editor) as canvas subcategories. The
+-- settings are per character and stay in ns.charDb; the controls read and write them there or
+-- through the setters of the modules, so a change takes effect right away.
 
-local category
+local category, panel
 
--- Proxy setting variables must be unique among all settings of the game and addons.
-local function RegisterProxySetting(variable, varType, name, defaultValue, getValue, setValue)
-    return Settings.RegisterProxySetting(category, "GRYPHONCHAT_" .. variable, varType, name, defaultValue,
-        getValue, setValue)
+-- The sliders move in whole steps, but their values may carry rounding errors.
+local function Round(value)
+    return floor(value + 0.5)
 end
 
-local function RegisterGeneralSettings()
-    local notifications = RegisterProxySetting("NOTIFICATIONS", Settings.VarType.Boolean,
-        L["OPTIONS_NOTIFICATIONS"], ns.charDefaults.notifications,
+local function FormatNumber(value)
+    return tostring(Round(value))
+end
+
+local function FormatBottomDelay(value)
+    local seconds = Round(value)
+    return seconds == 0 and L["OPTIONS_OFF"] or format(L["OPTIONS_SECONDS"], seconds)
+end
+
+local function AddGeneralSettings()
+    panel:AddCheckbox(L["OPTIONS_NOTIFICATIONS"], L["OPTIONS_NOTIFICATIONS_TOOLTIP"],
         function()
             return ns.charDb.notifications
         end,
         function(value)
             ns.charDb.notifications = value
         end)
-    Settings.CreateCheckbox(category, notifications, L["OPTIONS_NOTIFICATIONS_TOOLTIP"])
 
     local ChatHistory = ns.modules.ChatHistory
-    local chatLines = RegisterProxySetting("CHAT_LINES", Settings.VarType.Number, L["OPTIONS_CHAT_LINES"],
-        ns.charDefaults.chatLines,
+    panel:AddSlider(L["OPTIONS_CHAT_LINES"], L["OPTIONS_CHAT_LINES_TOOLTIP"],
+        ChatHistory.MIN_LINES, ChatHistory.MAX_LINES, 1, FormatNumber,
         function()
             return ns.charDb.chatLines
         end,
         function(value)
-            -- The slider moves in whole steps, but its values may carry rounding errors.
-            ChatHistory.SetLines(floor(value + 0.5))
+            ChatHistory.SetLines(Round(value))
         end)
-    local sliderOptions = Settings.CreateSliderOptions(ChatHistory.MIN_LINES, ChatHistory.MAX_LINES, 1)
-    sliderOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
-    Settings.CreateSlider(category, chatLines, sliderOptions, L["OPTIONS_CHAT_LINES_TOOLTIP"])
 
     local ChatInput = ns.modules.ChatInput
-    local arrowKeys = RegisterProxySetting("ARROW_KEYS", Settings.VarType.Boolean, L["OPTIONS_ARROW_KEYS"],
-        ns.charDefaults.chatInput.arrowKeys,
+    panel:AddCheckbox(L["OPTIONS_ARROW_KEYS"], L["OPTIONS_ARROW_KEYS_TOOLTIP"],
         function()
             return ns.charDb.chatInput.arrowKeys
         end,
         ChatInput.SetArrowKeys)
-    Settings.CreateCheckbox(category, arrowKeys, L["OPTIONS_ARROW_KEYS_TOOLTIP"])
 
-    local keepHistory = RegisterProxySetting("KEEP_HISTORY", Settings.VarType.Boolean, L["OPTIONS_KEEP_HISTORY"],
-        ns.charDefaults.chatInput.keepHistory,
+    panel:AddCheckbox(L["OPTIONS_KEEP_HISTORY"], L["OPTIONS_KEEP_HISTORY_TOOLTIP"],
         function()
             return ns.charDb.chatInput.keepHistory
         end,
         ChatInput.SetKeepHistory)
-    Settings.CreateCheckbox(category, keepHistory, L["OPTIONS_KEEP_HISTORY_TOOLTIP"])
 
-    local linkTooltips = RegisterProxySetting("LINK_TOOLTIPS", Settings.VarType.Boolean, L["OPTIONS_LINK_TOOLTIPS"],
-        ns.charDefaults.linkTooltips,
+    panel:AddCheckbox(L["OPTIONS_LINK_TOOLTIPS"], L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"],
         function()
             return ns.charDb.linkTooltips
         end,
         function(value)
             ns.charDb.linkTooltips = value
         end)
-    Settings.CreateCheckbox(category, linkTooltips, L["OPTIONS_LINK_TOOLTIPS_TOOLTIP"])
 
-    local whisperList = RegisterProxySetting("WHISPER_LIST", Settings.VarType.Boolean, L["OPTIONS_WHISPER_LIST"],
-        ns.charDefaults.whisperList,
+    panel:AddCheckbox(L["OPTIONS_WHISPER_LIST"], L["OPTIONS_WHISPER_LIST_TOOLTIP"],
         function()
             return ns.charDb.whisperList
         end,
         ns.modules.WhisperList.SetEnabled)
-    Settings.CreateCheckbox(category, whisperList, L["OPTIONS_WHISPER_LIST_TOOLTIP"])
 
     local ChatScroll = ns.modules.ChatScroll
-    local scrollModifiers = RegisterProxySetting("SCROLL_MODIFIERS", Settings.VarType.Boolean,
-        L["OPTIONS_SCROLL_MODIFIERS"], ns.charDefaults.chatScroll.modifiers,
+    panel:AddCheckbox(L["OPTIONS_SCROLL_MODIFIERS"], L["OPTIONS_SCROLL_MODIFIERS_TOOLTIP"],
         function()
             return ns.charDb.chatScroll.modifiers
         end,
         function(value)
             ns.charDb.chatScroll.modifiers = value
         end)
-    Settings.CreateCheckbox(category, scrollModifiers, L["OPTIONS_SCROLL_MODIFIERS_TOOLTIP"])
 
-    local bottomDelay = RegisterProxySetting("SCROLL_BOTTOM_DELAY", Settings.VarType.Number,
-        L["OPTIONS_SCROLL_BOTTOM_DELAY"], ns.charDefaults.chatScroll.bottomDelay,
+    panel:AddSlider(L["OPTIONS_SCROLL_BOTTOM_DELAY"], L["OPTIONS_SCROLL_BOTTOM_DELAY_TOOLTIP"],
+        0, ChatScroll.MAX_BOTTOM_DELAY, ChatScroll.BOTTOM_DELAY_STEP, FormatBottomDelay,
         function()
             return ns.charDb.chatScroll.bottomDelay
         end,
         function(value)
-            ChatScroll.SetBottomDelay(floor(value + 0.5))
+            ChatScroll.SetBottomDelay(Round(value))
         end)
-    local delayOptions = Settings.CreateSliderOptions(0, ChatScroll.MAX_BOTTOM_DELAY, ChatScroll.BOTTOM_DELAY_STEP)
-    delayOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, function(value)
-        local seconds = floor(value + 0.5)
-        return seconds == 0 and L["OPTIONS_OFF"] or format(L["OPTIONS_SECONDS"], seconds)
-    end)
-    Settings.CreateSlider(category, bottomDelay, delayOptions, L["OPTIONS_SCROLL_BOTTOM_DELAY_TOOLTIP"])
 end
 
-local function RegisterChannelNamesPage()
+-- A subcategory with a title and an editor that fills the rest of the page. Canvas pages show own
+-- frames only, so they do not share controls with Blizzard's settings.
+local function RegisterEditorPage(name, createEditor)
     local frame = CreateFrame("Frame")
 
     local title = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
     title:SetPoint("TOPLEFT", 10, -15)
-    title:SetText(L["OPTIONS_CHANNEL_NAMES"])
+    title:SetText(name)
 
-    local editor = ns.ChannelNamesEditor.Create(frame)
+    local editor = createEditor(frame)
     editor:SetPoint("TOPLEFT", 10, -50)
     editor:SetPoint("BOTTOMRIGHT", -10, 10)
 
-    Settings.RegisterCanvasLayoutSubcategory(category, frame, L["OPTIONS_CHANNEL_NAMES"])
-end
-
--- Chat alerts as a subcategory with the alerts editor: a table of the chat types and their alerts.
-local function RegisterAlertsPage()
-    local frame = CreateFrame("Frame")
-
-    local title = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
-    title:SetPoint("TOPLEFT", 10, -15)
-    title:SetText(L["OPTIONS_ALERTS"])
-
-    local editor = ns.ChatAlertsEditor.Create(frame)
-    editor:SetPoint("TOPLEFT", 10, -50)
-    editor:SetPoint("BOTTOMRIGHT", -10, 10)
-
-    Settings.RegisterCanvasLayoutSubcategory(category, frame, L["OPTIONS_ALERTS"])
+    Settings.RegisterCanvasLayoutSubcategory(category, frame, name)
 end
 
 function Options:OnInitialize()
-    category = Settings.RegisterVerticalLayoutCategory(ns.name)
-    RegisterGeneralSettings()
-    RegisterAlertsPage()
-    RegisterChannelNamesPage()
-    Settings.RegisterAddOnCategory(category)
+    panel = ns.OptionsPanel.Create(ns.name)
+    AddGeneralSettings()
+    category = panel:Register()
+    -- Chat alerts: a table of the chat types and their alerts.
+    RegisterEditorPage(L["OPTIONS_ALERTS"], ns.ChatAlertsEditor.Create)
+    RegisterEditorPage(L["OPTIONS_CHANNEL_NAMES"], ns.ChannelNamesEditor.Create)
 end
 
 -- "/gryphonchat options" opens the options page. Opening it from addon code is blocked in combat
