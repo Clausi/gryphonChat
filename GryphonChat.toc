@@ -30,6 +30,7 @@ Locales\frFR.lua
 Core\Init.lua
 Core\Compat.lua
 Core\Util.lua
+Core\OptionsPanel.lua
 Core\CopyFrame.lua
 
 # Modules
