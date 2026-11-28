@@ -24,8 +24,9 @@ A World of Warcraft addon that extends the default chat.
   name are highlighted.
 - **Short channel names:** optional, e.g. "[1. General - Elwynn Forest]" becomes "[1. G]". Blizzard's
   channels have default short names, every channel can get an own one.
-- **Options:** all settings on an own page in the game options (the chat alerts on a subpage), the
-  short channel names also in the chat settings of every chat window.
+- **Options:** all settings on an own page in the game options (the chat alerts and the short
+  channel names on subpages), the short channel names also in the chat settings of every chat
+  window.
 
 The full description for CurseForge and Wago is in [docs/addon-description.md](docs/addon-description.md),
 for WoWInterface (BBCode) in [docs/addon-description-wowinterface.txt](docs/addon-description-wowinterface.txt).
@@ -92,6 +93,7 @@ GryphonChat/
 │   ├── Init.lua           # Namespace, module registry, event dispatcher
 │   ├── Compat.lua         # Access to Blizzard chat frame internals and chat APIs
 │   ├── Util.lua           # Print/Notify/Debug helpers, debug memory output, defaults
+│   ├── OptionsPanel.lua   # Options page from own controls (checkboxes, sliders, buttons) on a canvas
 │   ├── CopyFrame.lua      # Read-only dialogs to copy a line or a whole text with Ctrl+C
 │   └── Main.lua           # Bootstrap: saved variables, module lifecycle, slash commands
 └── Modules/
@@ -106,7 +108,7 @@ GryphonChat/
     ├── ChatAlertsEditor.lua  # Table of the chat types and their alerts with the keyword settings, used by Options
     ├── ChannelNames.lua   # Short channel names in front of channel messages ("/gryphonchat channels")
     ├── ChannelNamesEditor.lua  # Editor for the short channel names, used by Options and ChatConfig
-    ├── Options.lua        # Options page in the game settings ("/gryphonchat options")
+    ├── Options.lua        # Options page in the game settings with own controls ("/gryphonchat options")
     └── ChatConfig.lua     # GryphonChat category in the chat settings of every chat window
 ```
 
